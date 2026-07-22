@@ -1,11 +1,18 @@
+{{ 
+    config(
+        materialized='view',
+        full_refresh=true
+    ) 
+}}
+
 with customers as (
 
     select
         id as customer_id,
         first_name,
         last_name
-
-    from raw-data-503215.jaffle_shop.customers
+    -- from {{ source('jaffle_shop', 'customers') }}
+    from `raw-data-503215`.jaffle_shop.customers
 
 ),
 
@@ -16,8 +23,8 @@ orders as (
         user_id as customer_id,
         order_date,
         status
-
-    from raw-data-503215.jaffle_shop.orders
+    -- from {{ source('jaffle_shop', 'orders') }}
+    from `raw-data-503215`.jaffle_shop.orders
 
 ),
 
