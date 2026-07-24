@@ -15,6 +15,8 @@ final AS (
     select
         orders.order_id,
         orders.customer_id,
+        orders.order_date,
+        orders.status,
         SAFE_DIVIDE(payments.amount, 100) as amount,
 
     from orders
