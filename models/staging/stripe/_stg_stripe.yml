@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_stripe__payments
+    description: Staging layer for Stripe payments data
+    columns:
+      - name: payment_id
+        description: Unique identifier for the payment
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Customer identifier
+      - name: amount
+        description: Payment amount
+      - name: currency
+        description: Currency code
+      - name: status
+        description: Payment status
+      - name: created_at
+        description: Payment creation timestamp
