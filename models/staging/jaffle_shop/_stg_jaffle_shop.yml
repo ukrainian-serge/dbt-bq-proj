@@ -3,7 +3,7 @@ models:
     description: Staging layer for Jaffle Shop customers data
     columns:
       - name: customer_id
-        description: Unique identifier for the customer
+        description: Unique identifier for the customer. Primary key.
         data_tests:
           - unique
           - not_null
@@ -16,12 +16,12 @@ models:
     description: Staging layer for Jaffle Shop orders data
     columns:
       - name: order_id
-        description: Unique identifier for the order
+        description: Unique identifier for the order. Primary key.
         data_tests:
           - unique
           - not_null
       - name: customer_id
-        description: Customer identifier
+        description: Customer identifier. 
         data_tests:
           - relationships:
               arguments:
@@ -30,7 +30,7 @@ models:
       - name: order_date
         description: Date of the order
       - name: status
-        description: Order status
+        description: "{{ doc('order_status') }}"
         data_tests:
           - accepted_values:
               arguments:

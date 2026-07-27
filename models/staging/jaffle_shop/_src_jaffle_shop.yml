@@ -2,14 +2,16 @@ version: 2
 
 sources:
   - name: jaffle_shop
-    description: "Raw data from the Jaffle Shop application"
+    description: Clone from Google Big Query public dataset `jaffle_shop` for dbt demo
     database: raw-data-503215   # The Project ID
     schema: jaffle_shop         # The Dataset name
     tables:
       - name: customers
         identifier: customers
+        description: Raw data
         columns:
           - name: id # changed to customer_id in stg model
+            description: primary key for this source
             data_tests:
               - not_null
               - unique
