@@ -1,24 +1,15 @@
-
-target/
-dbt_modules/
-logs/
-dbt_internal_packages/
-/.vscode/
-/.bq_service_accounts/
-
-
-
 # VS Code
-/.vscode/
+.vscode/
 
 # Python virtual environments
-/venv/
-/.venv/
-/env/
+venv/
+.venv/
+env/
 
 # dbt target directory (compiled SQL and logs)
 target/
 dbt_packages/
+dbt_internal_packages/
 
 # Logs
 logs/
@@ -29,5 +20,5 @@ logs/
 Thumbs.db
 
 # Secrets (Always ignore keys!)
-/.bq_service_accounts/
-/.profiles.yml
+.bq_service_accounts/
+.profiles.yml

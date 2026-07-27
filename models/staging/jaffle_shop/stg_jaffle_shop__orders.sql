@@ -4,4 +4,3 @@
         order_date,
         status
     from {{ source('jaffle_shop', 'orders') }}
-    -- from `raw-data-503215`.jaffle_shop.orders

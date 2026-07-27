@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: "Raw data from the Jaffle Shop application"
+    database: raw-data-503215   # The Project ID
+    schema: jaffle_shop         # The Dataset name
+    tables:
+      - name: customers
+        identifier: customers
+      - name: orders
+        config:
+          freshness:
+            warn_after: {count: 24, period: hour}
+            # error_after: {count: 48, period: hour}
+
+          loaded_at_field: _etl_loaded_at
