@@ -8,6 +8,14 @@ sources:
     tables:
       - name: customers
         identifier: customers
+        columns:
+          - name: id # changed to customer_id in stg model
+            data_tests:
+              - not_null
+              - unique
+
+
+  
       - name: orders
         config:
           freshness:
