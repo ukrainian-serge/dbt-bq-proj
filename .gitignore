@@ -1,3 +1,6 @@
+# Environment variables
+.env
+
 # VS Code
 .vscode/
 
@@ -5,6 +8,7 @@
 venv/
 .venv/
 env/
+.env/
 
 # dbt target directory (compiled SQL and logs)
 target/
@@ -22,3 +26,8 @@ Thumbs.db
 # Secrets (Always ignore keys!)
 .bq_service_accounts/
 .profiles.yml
+
+# generated data
+data/
+*.csv
+*.pkl
