@@ -15,6 +15,11 @@ sources:
             data_tests:
               - not_null
               - unique
+          - name: name
+            description: first and last name
+            data_type: string
+            data_tests:
+              - not_null
 
       - name: items
         columns:
