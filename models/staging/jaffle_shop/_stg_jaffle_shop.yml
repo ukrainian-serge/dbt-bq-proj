@@ -24,10 +24,6 @@ models:
         data_tests:
           - unique
           - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_jaffle_shop__orders')
-                field: order_id
       - name: customer_id
         description: Customer identifier.
         data_type: string
@@ -68,6 +64,10 @@ models:
         data_type: string
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: order_id
       - name: sku
         description: Stock Keeping Unit, foreign key to products.sku
         data_type: string
@@ -179,17 +179,3 @@ models:
       - name: content
         data_type: string
         description: content of the tweet
-
-        
-      # - name: status
-        # description: "{{ doc('order_status') }}"
-        # data_tests:
-        #   - accepted_values:
-        #       arguments:
-        #         values: [
-        #             'placed', 
-        #             'shipped', 
-        #             'completed', 
-        #             'returned', 
-        #             'return_pending'
-        #             ]

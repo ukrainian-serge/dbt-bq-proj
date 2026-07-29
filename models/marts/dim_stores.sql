@@ -1,7 +1,7 @@
 
-with customers as (
+with stores as (
 
-    select * FROM {{ ref('stg_jaffle_shop__customers') }}
+    select * FROM {{ ref('stg_jaffle_shop__stores') }}
 
 ),
 
@@ -11,10 +11,11 @@ orders as (
     
 ),
 
-customer_orders as (
+
+store_orders as (
 
     select
-        customer_id,
+        store_id,
 
         min(ordered_at) as first_order_date,
         max(ordered_at) as most_recent_order_date,
@@ -25,23 +26,21 @@ customer_orders as (
 
     group by 1
 
-),
+)
 
-
-final as (
+, final as (
 
     select
-        A.customer_id,
-        A.first_name,
-        A.last_name,
+        A.store_id,
+        A.name,
         B.first_order_date,
         B.most_recent_order_date,
         coalesce(B.number_of_orders, 0) as number_of_orders,
         coalesce(B.lifetime_value, 0) as lifetime_value
 
-    from customers as A
+    from stores as A
 
-    left join customer_orders AS B using (customer_id)
+    left join store_orders AS B using (store_id)
 
 )
 
