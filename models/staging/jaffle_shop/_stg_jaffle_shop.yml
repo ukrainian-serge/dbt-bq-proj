@@ -4,40 +4,192 @@ models:
     columns:
       - name: customer_id
         description: Unique identifier for the customer. Primary key.
+        data_type: string
         data_tests:
           - unique
           - not_null
       - name: first_name
         description: Customer's first name
+        data_type: string
       - name: last_name
         description: Customer's last name
+        data_type: string
 
-  # - name: stg_jaffle_shop__orders
-  #   description: Staging layer for Jaffle Shop orders data
-  #   columns:
-  #     - name: order_id
-  #       description: Unique identifier for the order. Primary key.
-  #       data_tests:
-  #         - unique
-  #         - not_null
-  #     - name: customer_id
-  #       description: Customer identifier. 
-  #       data_tests:
-  #         - relationships:
-  #             arguments:
-  #               to: ref('stg_jaffle_shop__customers')
-  #               field: customer_id
-  #     - name: order_date
-  #       description: Date of the order
-  #     - name: status
-  #       description: "{{ doc('order_status') }}"
-  #       data_tests:
-  #         - accepted_values:
-  #             arguments:
-  #               values: [
-  #                   'placed', 
-  #                   'shipped', 
-  #                   'completed', 
-  #                   'returned', 
-  #                   'return_pending'
-  #                   ]
+  - name: stg_jaffle_shop__orders
+    description: Staging layer for Jaffle Shop orders data
+    columns:
+      - name: order_id
+        description: Unique identifier for the order. Primary key.
+        data_type: string
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: order_id
+      - name: customer_id
+        description: Customer identifier.
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__customers')
+                field: customer_id
+      - name: ordered_at
+        description: Date of the order
+        data_type: datetime
+      - name: store_id
+        description: Identifier for the store where the order was placed
+        data_type: string
+        data_tests:
+          - not_null
+      - name: subtotal
+        description: Subtotal amount for the order
+        data_type: float
+      - name: tax_paid
+        description: Tax amount paid for the order
+        data_type: float
+      - name: order_total
+        description: Total amount for the order # maybe including tax?
+        data_type: float
+
+  - name: stg_jaffle_shop__items
+    description: Staging layer for Jaffle Shop items data
+    columns:
+      - name: item_id
+        description: Unique identifier for the item. Primary key.
+        data_type: string
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: Identifier for the order to which the item belongs
+        data_type: string
+        data_tests:
+          - not_null
+      - name: sku
+        description: Stock Keeping Unit, foreign key to products.sku
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__products')
+                field: sku
+
+  - name: stg_jaffle_shop__products
+    description: Staging layer for Jaffle Shop products data
+    columns:
+      - name: sku
+        description: Stock Keeping Unit, primary key for this source
+        data_type: string
+        data_tests:
+          - unique
+          - not_null
+      - name: name
+        description: Product name
+        data_type: string
+      - name: type
+        description: Product type
+        data_type: string
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [
+                    'jaffle',
+                    'beverage',
+                    ]
+      - name: price
+        description: Product price
+        data_type: float
+        data_tests:
+          - not_null
+      - name: description
+        description: Description of the product
+        data_type: string
+
+  - name: stg_jaffle_shop__stores
+    description: ""
+    columns:
+      - name: store_id
+        data_type: string
+        data_tests:
+          - not_null
+          - unique
+        description: Unique store identifier. Primary key for this source. 
+      - name: name
+        data_type: string
+        description: Name of store
+      - name: opened_at
+        data_type: datetime
+        description: Date when the store was opened
+      - name: tax_rate
+        data_type: float64
+        description: Tax rate for the store. Used to calculate tax for orders placed at this store.
+
+  - name: stg_jaffle_shop__supplies
+    description: ""
+    columns:
+      - name: supply_id
+        data_type: string
+        description: unique identifier for the supply. Primary key for this source.
+        data_tests:
+          - not_null
+      - name: name
+        data_type: string
+        description: supplies description
+        data_tests:
+          - not_null
+      - name: cost
+        data_type: float64
+        description: cost of supplies
+        data_tests:
+          - not_null
+      - name: perishable
+        data_type: boolean
+        description: perishable or not
+        data_tests:
+          - not_null
+      - name: sku
+        data_type: string
+        description: sku of product which uses these supplies. Foreign key to products.sku
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__products')
+                field: sku
+
+
+  - name: stg_jaffle_shop__tweets
+    description: tweet activity about jaffle shop
+    columns:
+      - name: tweet_id
+        data_type: string
+        description: unique identifier for the tweet. Primary key for this source.
+      - name: user_id
+        data_type: string
+        description: user identifier for the user who posted the tweet
+      - name: tweeted_at
+        data_type: datetime
+        description: timestamp when the tweet was posted
+        data_tests:
+          - not_null
+      - name: content
+        data_type: string
+        description: content of the tweet
+
+        
+      # - name: status
+        # description: "{{ doc('order_status') }}"
+        # data_tests:
+        #   - accepted_values:
+        #       arguments:
+        #         values: [
+        #             'placed', 
+        #             'shipped', 
+        #             'completed', 
+        #             'returned', 
+        #             'return_pending'
+        #             ]

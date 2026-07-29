@@ -21,22 +21,6 @@ sources:
             data_tests:
               - not_null
 
-      - name: items
-        columns:
-          - name: id
-            data_type: string
-            data_tests:
-              - not_null
-              - unique
-          - name: order_id
-            data_type: string
-            data_tests:
-              - not_null
-          - name: sku
-            data_type: string
-            data_tests:
-              - not_null
-
       - name: orders
         columns:
           - name: id
@@ -44,7 +28,6 @@ sources:
             data_tests:
               - not_null
               - unique
-        
           - name: customer
             data_type: string
           - name: ordered_at
@@ -64,11 +47,28 @@ sources:
           - name: order_total
             data_type: string
 
+      - name: items
+        columns:
+          - name: id
+            data_type: string
+            data_tests:
+              - not_null
+              - unique
+          - name: order_id
+            data_type: string
+            data_tests:
+              - not_null
+          - name: sku
+            description: stock keeping unit, foreign key to products.sku
+            data_type: string
+            data_tests:
+              - not_null
+
       - name: products
         columns:
           - name: sku
             data_type: string
-            description: primary key for this source
+            description: stock keeping unit, primary key for this source
             data_tests:
               - not_null
               - unique
@@ -115,6 +115,7 @@ sources:
             data_type: string
           - name: sku
             data_type: string
+            description: stock keeping unit, foreign key to products.sku
             data_tests:
               - not_null
 
