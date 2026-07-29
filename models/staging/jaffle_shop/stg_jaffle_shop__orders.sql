@@ -2,7 +2,7 @@ WITH stg AS (
     select
         id,
         customer,
-        CAST(ordered_at AS DATE) as ordered_at,
+        CAST(ordered_at AS DATETIME) as ordered_at,
         store_id,
         CAST(subtotal AS integer) as subtotal,
         CAST(tax_paid AS integer) as tax_paid,

@@ -39,6 +39,7 @@ models:
 
 
     marts:
+      +enabled: true
       +materialized: table
 
       # +persist_docs:

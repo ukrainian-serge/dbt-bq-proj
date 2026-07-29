@@ -6,7 +6,7 @@
 
 SELECT 
     order_id,
-    SUM(amount) AS total_amount
-FROM {{ ref('stg_stripe__payments') }}
+    SUM(order_total) AS order_total
+FROM {{ ref('stg_jaffle_shop__orders') }}
 GROUP BY order_id
-HAVING total_amount < 0
+HAVING order_total < 0
