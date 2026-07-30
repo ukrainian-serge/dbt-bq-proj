@@ -36,11 +36,12 @@ models:
   jaffle_shop:
     staging:
       +materialized: view
-
+      +static_analysis: strict
 
     marts:
       +enabled: true
       +materialized: table
+      +static_analysis: strict
 
     legacy:
       +enabled: false

@@ -42,13 +42,13 @@ models:
           - not_null
       - name: subtotal
         description: Subtotal amount for the order
-        data_type: float
+        data_type: float64
       - name: tax_paid
         description: Tax amount paid for the order
-        data_type: float
+        data_type: float64
       - name: order_total
         description: Total amount for the order # maybe including tax?
-        data_type: float
+        data_type: float64
 
   - name: stg_jaffle_shop__items
     description: Staging layer for Jaffle Shop items data
@@ -102,7 +102,7 @@ models:
                     ]
       - name: price
         description: Product price
-        data_type: float
+        data_type: float64
         data_tests:
           - not_null
       - name: description
