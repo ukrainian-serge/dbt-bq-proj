@@ -1,10 +1,10 @@
 with 
 
-customers AS (
+stg_customers AS (
     SELECT * FROM {{ ref('dim_customers') }}
 )
 
-, orders AS (
+, stg_orders AS (
     SELECT * FROM {{ ref('fct_orders') }}
 )
 
@@ -18,13 +18,13 @@ customers AS (
         c.last_name as customer_last_name,   
         o.order_total as order_total,
 
-        min(o.ordered_at) over (partition by o.customer_id) as cust_first_order_date,
-        max(o.ordered_at) over (partition by o.customer_id) as cust_most_recent_order_date,
-        count(o.order_id) over (partition by o.customer_id) as cust_lifetime_order_count,
+        min(o.ordered_at) over (partition by o.customer_id) as customer_first_order_date,
+        max(o.ordered_at) over (partition by o.customer_id) as customer_most_recent_order_date,
+        count(o.order_id) over (partition by o.customer_id) as customer_lifetime_order_count,
         o.ordered_at as order_date,
 
-    from orders as o
-    left join customers as c on o.customer_id = c.customer_id
+    from stg_orders as o
+    left join stg_customers as c on o.customer_id = c.customer_id
     GROUP BY ALL
 
 )
@@ -35,7 +35,7 @@ customers AS (
     select 
         *,
         case
-            when order_date = cust_first_order_date then 'new'
+            when order_date = customer_first_order_date then 'new'
             else 'return'
         end as nvsr,
 
