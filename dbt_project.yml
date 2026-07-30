@@ -42,7 +42,7 @@ models:
       +enabled: true
       +materialized: table
 
-    LEGACY:
+    legacy:
       +enabled: false
 
       # +persist_docs:
