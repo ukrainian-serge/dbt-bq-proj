@@ -42,6 +42,9 @@ models:
       +enabled: true
       +materialized: table
 
+    LEGACY:
+      +enabled: false
+
       # +persist_docs:
       #     relation: true
       #     columns: true
