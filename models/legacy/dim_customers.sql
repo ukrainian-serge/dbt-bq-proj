@@ -28,21 +28,21 @@ customer_orders as (
 ),
 
 
-final as (
+-- final as (
 
-    select
-        A.customer_id,
-        A.first_name,
-        A.last_name,
-        B.first_order_date,
-        B.most_recent_order_date,
-        coalesce(B.number_of_orders, 0) as number_of_orders,
-        coalesce(B.lifetime_value, 0) as lifetime_value
+--     select
+--         A.customer_id,
+--         A.first_name,
+--         A.last_name,
+--         B.first_order_date,
+--         B.most_recent_order_date,
+--         coalesce(B.number_of_orders, 0) as number_of_orders,
+--         coalesce(B.lifetime_value, 0) as lifetime_value
 
-    from customers as A
+--     from customers as A
 
-    left join customer_orders AS B using (customer_id)
+--     left join customer_orders AS B using (customer_id)
 
-)
+-- )
 
 select * from final

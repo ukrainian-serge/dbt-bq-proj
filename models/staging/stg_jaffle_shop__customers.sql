@@ -1,17 +1,14 @@
-WITH stg AS (
+WITH source AS (
 
-select
-    id as customer_id,
-    name as first_and_last_name,
-from {{ source('jaffle_shop', 'customers') }}
+select * from {{ source('jaffle_shop', 'customers') }}
 
 )
 
 , trimmed as (
     SELECT 
-        customer_id,
-        TRIM(first_and_last_name) as first_and_last_name
-    FROM stg
+        id as customer_id,
+        TRIM(name) as first_and_last_name
+    FROM source
 )
 
 , final as (

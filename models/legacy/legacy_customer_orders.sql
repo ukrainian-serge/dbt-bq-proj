@@ -1,29 +1,37 @@
+{{ config(enabled=false) }}
 
+WITH paid_orders as (
 
-WITH paid_orders as (select Orders.ID as order_id,
-        Orders.USER_ID    as customer_id,
-        Orders.ORDER_DATE AS order_placed_at,
-            Orders.STATUS AS order_status,
+    select Orders.order_id as order_id,
+        Orders.customer_id    as customer_id,
+        Orders.ordered_at AS order_placed_at,
         p.total_amount_paid,
         p.payment_finalized_date,
-        C.FIRST_NAME    as customer_first_name,
-            C.LAST_NAME as customer_last_name
-    FROM {{ source('jaffle_shop', 'orders') }} as Orders
-    left join (select ORDERID as order_id, max(CREATED) as payment_finalized_date, sum(AMOUNT) / 100.0 as total_amount_paid
-from raw.stripe.payment
-where STATUS <> 'fail'
-group by 1) p ON orders.ID = p.order_id
-left join {{ source('jaffle_shop', 'customers') }} C on orders.USER_ID = C.ID ),
+        C.first_name    as customer_first_name,
+        C.last_name as customer_last_name
+    FROM `dbt-dev-503215.dbt_skamilchu.stg_jaffle_shop__orders` as Orders
+    INNER join (
+        select 
+            order_id, 
+            max(ordered_at) as payment_finalized_date, 
+            sum(order_total) / 100.0 as total_amount_paid
+        from `dbt-dev-503215.dbt_skamilchu.stg_jaffle_shop__orders`
+        WHERE order_total > 0
+        group by 1
 
-customer_orders 
-    as (select C.ID as customer_id
-        , min(ORDER_DATE) as first_order_date
-        , max(ORDER_DATE) as most_recent_order_date
-        , count(ORDERS.ID) AS number_of_orders
-    from {{ source('jaffle_shop', 'customers') }} C 
-    left join {{ source('jaffle_shop', 'orders') }} as Orders
-    on orders.USER_ID = C.ID 
-    group by 1)
+        ) p ON orders.order_id = p.order_id
+    left join `dbt-dev-503215.dbt_skamilchu.stg_jaffle_shop__customers` C on orders.customer_id = C.customer_id 
+
+),
+
+customer_orders as (
+        select Orders.customer_id as customer_id
+        , min(ordered_at) as first_order_date
+        , max(ordered_at) as most_recent_order_date
+        , count(Orders.order_id) AS number_of_orders
+    from `dbt-dev-503215.dbt_skamilchu.stg_jaffle_shop__orders` as Orders
+    group by 1
+    )
 
 select
     p.*,

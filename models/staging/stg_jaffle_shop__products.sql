@@ -1,11 +1,5 @@
-WITH stg AS (
-    SELECT 
-        sku,
-        name,
-        type,
-        CAST(price AS FLOAT64) as price,
-        description
-    FROM {{ source('jaffle_shop', 'products') }}
+WITH source AS (
+    SELECT * FROM {{ source('jaffle_shop', 'products') }}
 )
 
 
@@ -13,11 +7,11 @@ WITH stg AS (
 , final AS (
     SELECT 
         sku,
-        name,
-        type,
-        SAFE_DIVIDE(price, 100) as price,
+        name as product_name,
+        type as product_type,
+        SAFE_DIVIDE(CAST(price AS FLOAT64), 100) as price,
         description
-    FROM stg
+    FROM source
 )
 
 SELECT * FROM final
