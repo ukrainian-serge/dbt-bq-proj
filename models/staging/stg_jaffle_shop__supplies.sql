@@ -1,23 +1,15 @@
-WITH stg AS (
-    SELECT
-        id as supply_id,
-        name,
-        CAST(cost AS FLOAT64) as cost,
-        CAST(perishable AS BOOLEAN) as perishable,
-        sku
-    FROM {{source('jaffle_shop', 'supplies')}}
+WITH source AS (
+    SELECT * FROM {{source('jaffle_shop', 'supplies')}}
 )
-
-
 
 , final AS (
     SELECT
-        supply_id,
-        name,
-        SAFE_DIVIDE(cost, 100) as cost,
-        perishable,
+        id as supply_id,
+        name as supplies_name,
+        SAFE_DIVIDE(CAST(cost AS FLOAT64), 100) as cost,
+        CAST(perishable AS BOOLEAN) as perishable,
         sku
-    FROM stg
+    FROM source
 )
 
 SELECT * FROM final

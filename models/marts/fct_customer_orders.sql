@@ -1,58 +1,32 @@
 with 
 
-stg_customers AS (
-    SELECT * FROM {{ ref('dim_customers') }}
+ int_customer_orders AS (
+    SELECT * FROM {{ ref('int_customer_orders') }}
 )
 
-, stg_orders AS (
-    SELECT * FROM {{ ref('fct_orders') }}
+, customer_name_mapper AS (
+    select * from {{ ref('stg_jaffle_shop__customers')}}
 )
-
-
-
-, customer_orders AS (
-    SELECT
-        o.order_id,
-        o.customer_id,
-        c.first_name as customer_first_name,
-        c.last_name as customer_last_name,   
-        o.order_total as order_total,
-
-        min(o.ordered_at) over (partition by o.customer_id) as customer_first_order_date,
-        max(o.ordered_at) over (partition by o.customer_id) as customer_most_recent_order_date,
-        count(o.order_id) over (partition by o.customer_id) as customer_lifetime_order_count,
-        o.ordered_at as order_date,
-
-    from stg_orders as o
-    left join stg_customers as c on o.customer_id = c.customer_id
-    GROUP BY ALL
-
-)
-
-
 
 , final as (
     select 
-        *,
-        case
-            when order_date = customer_first_order_date then 'new'
-            else 'return'
-        end as nvsr,
+        orders.order_id,
+        orders.customer_id,
+        orders.ordered_at as order_placed_at,
+        orders.order_total_amount_paid as total_amount_paid,
+        orders.order_finalized_date as payment_finalized_date,
+        customer_mapper.first_name as customer_first_name,
+        customer_mapper.last_name as customer_last_name,
+        orders.transaction_seq as transation_seq,
+        orders.customer_sales_seq as customer_sales_seq,
+        case when ordered_at = customer_first_order_date then 'new'
+                else 'return'
+                end as nvsr,
+        orders.customer_lifetime_value as customer_lifetime_value,
+        orders.customer_first_order_date as fdos
 
-        -- Order sequence & running CLV
-        row_number() over (
-            partition by customer_id
-            order by order_date,
-                order_id
-        ) as customer_sales_seq,
-
-        sum(order_total) over (
-            partition by customer_id
-            order by order_date,
-                order_id rows between unbounded preceding and current row
-        ) as customer_lifetime_value
-
-    from customer_orders
+    from int_customer_orders as orders
+    left join customer_name_mapper as customer_mapper using(customer_id)
 )
 
 select * from final

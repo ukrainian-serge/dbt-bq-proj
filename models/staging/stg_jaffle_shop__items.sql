@@ -1,9 +1,5 @@
-WITH stg AS (
-    SELECT
-        id,
-        order_id,
-        sku
-    FROM {{ source('jaffle_shop', 'items') }}
+WITH source AS (
+    SELECT * FROM {{ source('jaffle_shop', 'items') }}
 )
 
 , final AS (
@@ -11,7 +7,7 @@ WITH stg AS (
         id as item_id,
         order_id,
         sku
-    FROM stg
+    FROM source
 )
 
 SELECT * FROM final
