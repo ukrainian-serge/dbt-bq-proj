@@ -6,7 +6,8 @@
 
 {% set dbt_relation = ref('fct_customer_orders') %}
 
-{{ audit_helper.compare_all_rows(
+{{ audit_helper.compare_all_columns(
     a_relation = old_relation,
-    b_relation = dbt_relation
+    b_relation = dbt_relation,
+    primary_key = "order_id"
 ) }}
