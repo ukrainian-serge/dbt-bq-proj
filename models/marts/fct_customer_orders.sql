@@ -17,7 +17,7 @@ with
         orders.order_finalized_date as payment_finalized_date,
         customer_mapper.first_name as customer_first_name,
         customer_mapper.last_name as customer_last_name,
-        orders.transaction_seq as transation_seq,
+        orders.transaction_seq as transaction_seq,
         orders.customer_sales_seq as customer_sales_seq,
         case when ordered_at = customer_first_order_date then 'new'
                 else 'return'
