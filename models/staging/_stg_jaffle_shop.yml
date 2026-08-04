@@ -87,10 +87,10 @@ models:
         data_tests:
           - unique
           - not_null
-      - name: name
+      - name: product_name
         description: Product name
         data_type: string
-      - name: type
+      - name: product_type
         description: Product type
         data_type: string
         data_tests:
@@ -136,7 +136,7 @@ models:
         description: unique identifier for the supply. Primary key for this source.
         data_tests:
           - not_null
-      - name: name
+      - name: supplies_name
         data_type: string
         description: supplies description
         data_tests:
