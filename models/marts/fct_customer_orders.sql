@@ -8,6 +8,11 @@ with
     select * from {{ ref('stg_jaffle_shop__customers')}}
 )
 
+, audit_conflict as (
+    -- SELECTING HERE JUST TO TEST BUILD AND LINEAGE
+    select * from {{ ref('fct_customer_orders_audit_conflict_summary')}}
+)
+
 , final as (
     select 
         orders.order_id,

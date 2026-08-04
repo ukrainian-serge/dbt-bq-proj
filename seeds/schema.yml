@@ -1,0 +1,26 @@
+seeds:
+  - name: "fct_customer_orders_audit_conflict_summary"
+    description: "overall summary of the audit conflict."
+
+  - name: "fct_customer_orders_audit_conflict_summary_detailed"
+    description: "fdos column conflict order_ids and fdos values."
+    columns:
+      - name: "order_id"
+        description: "order_id of the conflict."
+        data_tests:
+          - not_null
+          - unique
+      - name: "legacy_fdos"
+        description: "legacy_fdos value of the conflict."
+        data_tests:
+          - not_null
+      - name: "dbt_fdos"
+        description: "dbt_fdos value of the conflict."
+        data_tests:
+          - not_null
+      - name: "fdos_diff"
+        description: "fdos_diff value of the conflict." 
+        data_tests:
+          - not_null
+
+        # legacy_fdos, dbt_fdos, fdos_diff
