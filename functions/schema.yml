@@ -16,3 +16,17 @@ functions:
         # default_value: "1"        # THis does not work for BQ
     returns:                    # required
       data_type: FLOAT64        # required
+
+
+  - name: mask_name       # required
+    description: udf that masks a name by replacing all but the first character with asterisks. # optional
+    config:
+      schema: shared_udfs     # this should be different than my schema. this ought to be a shared schema
+      database: dbt-dev-503215
+      # volatility: deterministic # this option is not available for bigquery
+    arguments:                  # optional
+      - name: input_name          # required if arguments is specified
+        data_type: STRING       # required if arguments is specified
+        description: "The first or last name to mask."
+    returns:                    # required
+      data_type: STRING        # required
