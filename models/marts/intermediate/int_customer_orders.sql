@@ -58,7 +58,12 @@ WITH orders as (
     SELECT
         *,
 
-        -- customer_lifetime_value / customer_lifetime_order_count as avg_customer_order_value
+        {{ function('divide_udf')}} (
+            
+            customer_lifetime_value,
+            customer_lifetime_order_count
+            
+        ) as customer_avg_non_returned_order_value
 
 
     FROM joined
