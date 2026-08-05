@@ -47,15 +47,8 @@ models:
       +materialized: table
       +static_analysis: strict
 
-    # legacy:
-    #   +enabled: false
-
-      # +persist_docs:
-      #     relation: true
-      #     columns: true
-
-    # +full_refresh: true     # Careful — this affects everything
-    # staging:
-    #   +static_analysis: strict
+    ##### takes over 20 minutes of startup time to run, so we disable it by default
+    python_demo:
+      +enabled: false
 
     
