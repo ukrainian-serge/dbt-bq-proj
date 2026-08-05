@@ -29,5 +29,3 @@ Thumbs.db
 
 # generated data
 data/
-*.csv
-*.pkl
