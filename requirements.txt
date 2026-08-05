@@ -16,6 +16,7 @@ google-resumable-media==2.10.0
 googleapis-common-protos==1.75.0
 grpcio==1.83.0
 grpcio-status==1.83.0
+holidays==0.102
 idna==3.18
 jafgen==0.4.14
 markdown-it-py==4.2.0

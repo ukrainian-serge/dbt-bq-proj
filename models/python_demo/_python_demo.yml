@@ -1,0 +1,4 @@
+models:
+  - name: is_holiday
+    config:
+      packages: ["holidays", "pandas"]
