@@ -32,9 +32,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
-# In this example config, we tell dbt to build all models in the jaffle_shop project
-# as tables. These settings can be overridden in the individual model files
-# using the `{{ config(...) }}` macro.
 
 models:
   jaffle_shop:
@@ -47,8 +44,8 @@ models:
       +materialized: table
       +static_analysis: strict
 
-    ##### takes over 20 minutes of startup time to run, so we disable it by default
+    
     python_demo:
-      +enabled: false
+      +enabled: false     ##### takes over 20 minutes of startup time to run, so we disable it by default
 
     

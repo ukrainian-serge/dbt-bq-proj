@@ -8,19 +8,21 @@ import pandas as pd
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
-load_dotenv('.env') 
+project_root = Path(__file__).resolve().parents[1]
+env_path = project_root / ".env"
 
-KEY_PATH = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-PROJECT_ID = os.getenv("DBT_PROJECT_ID")
-DATASET_ID = os.getenv("DBT_DATASET_ID")
-DATA_DIR = os.getenv("DBT_DATA_DIR", "data") 
+# Prefer values already exported by the shell/direnv environment.
+# Fall back to a dotenv file only if those variables are not present.
+if not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
+    load_dotenv(env_path)
 
-# Explicitly load .env from the current script's directory
-script_dir = os.path.dirname(os.path.abspath(__file__))
-env_path = os.path.join(script_dir, '.env')
+KEY_PATH = os.getenv("GOOGLE_APPLICATION_CREDENTIALS") or os.getenv("GOOGLE_APPLICATION_CREDENTIALS_DEV")
+PROJECT_ID = os.getenv("DBT_RAW_PROJECT_ID") or os.getenv("DBT_PROJECT_ID")
+DATASET_ID = os.getenv("DBT_RAW_DATASET_ID") or os.getenv("DBT_DATASET_ID")
+DATA_DIR = os.getenv("DBT_DATA_DIR", "data")
 
-print(f"🔍 Looking for .env at: {env_path}")
-print(f"🔍 File exists: {os.path.exists(env_path)}")
+print(f"🔍 Loading environment from: {env_path}")
+print(f"🔍 File exists: {env_path.exists()}")
 
 
 

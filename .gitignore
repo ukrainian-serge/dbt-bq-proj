@@ -1,5 +1,6 @@
 # Environment variables
 .env
+.envrc
 
 # VS Code
 .vscode/
@@ -23,9 +24,6 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Secrets (Always ignore keys!)
-.bq_service_accounts/
-.profiles.yml
 
 # generated data
 data/
