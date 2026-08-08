@@ -9,7 +9,7 @@ snapshots:
     relation: source('jaffle_shop', 'orders')
     description: A snapshot of the orders table.
     config:
-      database: "{{ env_var('DBT_DEV_PROJECT_ID') }}"
+      database: "{{ target.database }}"
       schema: snapshot
       strategy: check   # timestamp or check      
       unique_key: id
