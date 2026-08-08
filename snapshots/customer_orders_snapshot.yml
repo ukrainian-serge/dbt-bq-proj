@@ -5,23 +5,24 @@
 version: 2
 
 snapshots:
-  - name: customer_orders_snapshot
-    description: "Snapshot metadata for the fct_customer_orders model. Use a corresponding SQL snapshot in snapshots/customer_orders_snapshot.sql to capture changes over time."
-    columns:
-      - name: order_id
-        description: "Primary key / unique identifier for the order. Typically used as `unique_key` in the snapshot SQL."
+  - name: orders_snapshot
+    relation: source('jaffle_shop', 'orders')
+    description: A snapshot of the orders table.
+    config:
+      database: "{{ env_var('DBT_DEV_PROJECT_ID') }}"
+      schema: snapshot
+      strategy: check   # timestamp or check      
+      unique_key: id
+      check_cols: ['id' ,'customer', 'store_id', 'ordered_at', 'subtotal', 'tax_paid', 'order_total']
+      hard_deletes: ignore       ## ignore | invalidate | new_record
 
-      - name: customer_id
-        description: "Identifier for the customer who placed the order."
 
-      - name: order_total
-        description: "Total amount for the order."
 
-      - name: updated_at
-        description: "Timestamp column used for the 'timestamp' snapshot strategy. If using 'check' strategy, list the columns to check in the snapshot SQL instead."
+      # updated_at: updated_at  # Only used for 'timestamp' strategy. Specify the column that indicates when a row was last update.
+      # snapshot_meta_column_names:\
+      #   - dbt_scd_id
+      #   - dbt_updated_at
+      #   - dbt_valid_from
+      #   - dbt_valid_to
 
-      - name: dbt_valid_from
-        description: "Snapshot metadata column added by dbt to indicate the start of the row validity."
-
-      - name: dbt_valid_to
-        description: "Snapshot metadata column added by dbt to indicate the end of the row validity."
+      
