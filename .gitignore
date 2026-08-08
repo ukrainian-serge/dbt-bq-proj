@@ -1,6 +1,6 @@
-# Environment variables
-.env
-.envrc
+# Environment variables  #### THESE NEEDED TO RUN IN CLOUD
+# .env
+# .envrc
 
 # VS Code
 .vscode/
