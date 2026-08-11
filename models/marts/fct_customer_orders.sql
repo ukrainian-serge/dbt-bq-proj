@@ -1,5 +1,10 @@
-with 
+{{ config(
+    materialized='incremental',
 
+
+) }}
+
+with 
  int_customer_orders AS (
     SELECT * FROM {{ ref('int_customer_orders') }}
 )
@@ -8,10 +13,10 @@ with
     select * from {{ ref('stg_jaffle_shop__customers')}}
 )
 
-, audit_conflict as (
-    -- SELECTING HERE JUST TO TEST BUILD AND LINEAGE
-    select * from {{ ref('fct_customer_orders_audit_conflict_summary')}}
-)
+-- , audit_conflict as (
+--     -- SELECTING HERE JUST TO TEST BUILD AND LINEAGE
+--     select * from {{ ref('fct_customer_orders_audit_conflict_summary')}}
+-- )
 
 , final as (
     select 
@@ -35,6 +40,11 @@ with
 )
 
 select * from final
+
+{% if is_incremental() %}
+    where order_placed_at not in (select order_placed_at from {{ this }})
+{% endif %}
+order by order_placed_at desc
 
 
 
