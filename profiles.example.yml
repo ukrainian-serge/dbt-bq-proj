@@ -7,7 +7,7 @@ jaffle_shop:
       method: service-account # We are using a service account for authentication, but dbt supports other methods as well.
       project: YOUR-DEV-PROJ # The project ID for your BigQuery project. You can find this in the Google Cloud Console.
       dataset: YOUR-DEV-DATASET # The dataset in your BigQuery project where dbt will create tables and views. You can find this in the Google Cloud Console.
-      keyfile: /path/to/your/service-account-key.json # The path to your service account key file. You can download this from the Google Cloud Console.
+      keyfile: /path/to/creds.json # The path to your service account key file. You can download this from the Google Cloud Console.
       threads: 4
       location: US
 

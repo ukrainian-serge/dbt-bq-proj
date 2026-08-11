@@ -1,4 +1,4 @@
-# Environment variables  #### THESE NEEDED TO RUN IN CLOUD
+# Environment variables 
 .env
 # .envrc
 profiles.yml
