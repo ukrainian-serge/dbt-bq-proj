@@ -1,5 +1,5 @@
 # .envrc
-# Git-ignore this file!
+## SET UP direnv for this
 
 PATH_add tools
 
