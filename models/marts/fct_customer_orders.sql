@@ -1,7 +1,16 @@
 {{ config(
     materialized='incremental',
-    incremental_strategy='merge',
-    unique_key='order_id'
+    incremental_strategy='microbatch',
+    event_time='ordered_at',
+    begin='2019-08-01',
+    batch_size='day',
+    lookback=2,
+    full_refresh=false,
+    partition_by={
+      "field": "order_placed_at",
+      "data_type": "datetime",
+      "granularity": "day"
+    }
 ) }}
 
 with 
@@ -41,10 +50,10 @@ with
 
 select * from final
 
-{% if is_incremental() %}
-    where order_placed_at not in (select order_placed_at from {{ this }})
-{% endif %}
-order by order_placed_at desc
+-- {% if is_incremental() %}
+--     where order_placed_at not in (select order_placed_at from {{ this }})
+-- {% endif %}
+-- -- order by order_placed_at desc
 
 
 
