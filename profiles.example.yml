@@ -12,6 +12,6 @@ jaffle_shop:
       location: US
 
       # ### for python models
-      # compute_region: us-east1
-      # gcs_bucket: dev-jaffle-bucket
+      # compute_region: YOURE-REGION
+      # gcs_bucket: YOUR-DEV-BUCKET
       # network: default

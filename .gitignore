@@ -27,7 +27,8 @@ Thumbs.db
 
 
 # generated data
-data/
+*data/
+jaffle_raw_data/
 
 # cached
 __pycache__/
