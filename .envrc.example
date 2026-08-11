@@ -1,0 +1,6 @@
+# .envrc
+# Git-ignore this file!
+
+source env/bin/activate
+
+dotenv .env

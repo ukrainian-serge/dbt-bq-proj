@@ -1,6 +1,6 @@
 # Environment variables 
 .env
-# .envrc
+.envrc
 profiles.yml
 
 # VS Code
