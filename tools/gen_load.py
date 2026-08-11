@@ -18,7 +18,7 @@ app = typer.Typer(add_completion=False)
 project_root = Path(__file__).resolve().parents[1]
 script_root = Path(__file__).resolve().parent
 env_path = project_root / ".env"
-default_data_dir = script_root / "data"
+default_data_dir = script_root / "data"     ### defaults to this if .end does not have a folder name
 
 
 def load_environment() -> None:
