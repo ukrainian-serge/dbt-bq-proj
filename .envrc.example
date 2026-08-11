@@ -1,6 +1,8 @@
 # .envrc
 # Git-ignore this file!
 
+PATH_add tools
+
 source env/bin/activate
 
 dotenv .env

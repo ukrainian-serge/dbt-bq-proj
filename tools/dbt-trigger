@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# this is for those are using dbt cloud for prod
+
+# Default values
+CREDENTIALS_FILE="$HOME/keys/dbt-cloud-credentials.txt"
+CAUSE="from local CLI ($USER on $HOSTNAME)"
+
+# Print usage instructions
+usage() {
+  echo "Usage: $(basename "$0") [OPTIONS]"
+  echo ""
+  echo "Options:"
+  echo "  -c, --credentials PATH    Path to credentials file (default: ~/keys/dbt-cloud-credentials.txt)"
+  echo "  -m, --message STR         Trigger cause message (default: 'from local CLI ($USER on $HOSTNAME)')"
+  echo "  -h, --help                Show this help message and exit"
+  exit 0
+}
+
+# Parse named arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -c|--credentials)
+      CREDENTIALS_FILE="$2"
+      shift 2
+      ;;
+    -m|--message)
+      CAUSE="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      ;;
+    *)
+      echo "❌ Unknown option: $1"
+      echo "Use '$(basename "$0") -h' for usage information."
+      exit 1
+      ;;
+  esac
+done
+
+# Load credentials
+if [ -f "$CREDENTIALS_FILE" ]; then
+  source "$CREDENTIALS_FILE"
+else
+  echo "❌ Error: Credentials file not found at $CREDENTIALS_FILE"
+  echo "Use '$(basename "$0") -h' for usage information."
+  exit 1
+fi
+
+echo "🚀 Triggering Job ${DBT_CLOUD_JOB_ID} in Account ${DBT_CLOUD_ACCOUNT_ID}..."
+
+# Make the API Call
+RESPONSE=$(curl -s -X POST "https://${DBT_CLOUD_HOST}/api/v2/accounts/${DBT_CLOUD_ACCOUNT_ID}/jobs/${DBT_CLOUD_JOB_ID}/run/" \
+  -H "Authorization: Token ${DBT_CLOUD_API_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d "{\"cause\": \"${CAUSE}\"}")
+
+# Check for success using the actual JSON structure
+if echo "$RESPONSE" | grep -q '"is_success":true'; then
+  RUN_ID=$(echo "$RESPONSE" | grep -o '"id":[0-9]*' | head -1 | cut -d':' -f2)
+  echo "✅ Success! Job triggered."
+  echo "🔗 Run ID: ${RUN_ID}"
+  echo "🌐 View in browser: https://${DBT_CLOUD_HOST}/#/accounts/${DBT_CLOUD_ACCOUNT_ID}/runs/${RUN_ID}"
+else
+  echo "❌ Failed to trigger job."
+  echo "Response: $RESPONSE"
+fi
