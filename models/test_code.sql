@@ -1,17 +1,66 @@
 
-with all_values as (
+SELECT 
+    -- *
+--   MAX(CAST(ordered_at AS DATETIME)) as raw_table_max, 
+--   MIN(CAST(ordered_at AS DATETIME)) as raw_table_min 
+--   MAX(CAST(opened_at AS DATETIME)) as raw_table_max, 
+--   MIN(CAST(opened_at AS DATETIME)) as raw_table_min 
+-- MAX(CAST(tweeted_at AS DATETIME)) as raw_table_max,
+-- MIN(CAST(tweeted_at AS DATETIME)) as raw_table_min 
+-- COUNT(DISTINCT  DATE(tweeted_at))
+COUNT(DISTINCT  DATE(ordered_at))
+-- FROM `raw-data-503215.jaffle_shop.tweets` 
+FROM `raw-data-503215.jaffle_shop.orders` 
 
-    select
-        status as value_field,
-        count(*) as n_records
 
-    from `dbt-dev-503215`.`dbt_skamilchu`.`stg_jaffle_shop__orders`
-    group by status
+-- SELECT 
+--   MAX(CAST(ordered_at AS DATETIME)) as int_table_max, 
+--   MIN(CAST(ordered_at AS DATETIME)) as int_table_min,
+-- FROM `dbt-dev-503215.dbt_skamilchu.int_customer_orders` LIMIT 1000
 
-)
+-- SELECT 
+--   MAX(CAST(order_placed_at AS DATETIME)) as fct_table_max, 
+--   MIN(CAST(order_placed_at AS DATETIME)) as fct_table_min,
+-- FROM `dbt-dev-503215.dbt_skamilchu.fct_customer_orders` LIMIT 1000
 
-select *
-from all_values
-where value_field not in (
-    'placed','shipped','completed','returned'
-)
+-- INSERT INTO `raw-data-503215.jaffle_shop.orders` (id, customer, ordered_at, store_id, subtotal, tax_paid, order_total)
+-- WITH source AS (
+--   SELECT
+--       id, 
+--       customer, 
+--       ordered_at, 
+--       store_id, 
+--       subtotal, 
+--       tax_paid, 
+--       order_total
+--   FROM
+--     `raw-data-503215.jaffle_shop.orders`
+--   WHERE
+--     STARTS_WITH(ordered_at, '2019')
+-- )
+
+-- , final AS (
+
+--     SELECT
+--         id, 
+--         customer, 
+--         CAST(
+--             FORMAT_TIMESTAMP(
+--             '%Y-%m-%dT%H:%M:%S',
+--             DATETIME_ADD(PARSE_DATETIME('%Y-%m-%dT%H:%M:%S', ordered_at), INTERVAL 7 YEAR)
+--             ) AS STRING
+--             ) AS ordered_at,
+--         store_id, 
+--         subtotal, 
+--         tax_paid, 
+--         order_total
+--     FROM source
+    
+
+--     )
+    
+-- SELECT * FROM final
+-- WHERE PARSE_DATETIME('%Y-%m-%dT%H:%M:%S', ordered_at) <= current_date()
+-- ORDER BY ordered_at DESC
+
+-- ;

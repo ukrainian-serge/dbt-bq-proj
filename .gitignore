@@ -30,5 +30,8 @@ Thumbs.db
 *data/
 jaffle_raw_data/
 
-# cached
+# cache
 __pycache__/
+
+# included personal db and table names. keeping removed.
+test_code.sql
