@@ -37,8 +37,11 @@ models:
       +materialized: table
       +static_analysis: strict
 
-    
     python_demo:
       +enabled: false     ##### takes over 20 minutes of startup time to run, so we disable it by default
+
+seeds:
+  jaffle_shop:
+    +enabled: false
 
     
