@@ -229,6 +229,9 @@ def main(
             generate_jaffle_data(years, prefix, data_dir)
         else:
             generate_jaffle_data(1, prefix, data_dir)
+    # elif:
+        
+        
     
     load_data_to_bigquery(write_disposition, data_dir, date_from=date_from, date_to=date_to)
 
