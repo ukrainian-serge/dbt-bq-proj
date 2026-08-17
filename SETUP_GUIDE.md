@@ -9,7 +9,7 @@ This document provied necessary and optional set up instructions for env files, 
 **How to set up**:  
 1. Create GCP Project for your work.
 2. Create a service account for `DEV`.  
-The below is the roles and permssions I set up, I was indescriminate, you could probably walk them back a bit:    
+The below is the roles and permssions I set up, I was indiscriminate, you could probably walk them back a bit:    
     ```bash
     ------------------------------------------
     dbt Dev Service Account Roles (dev-sa-account@your-project-id.iam.gserviceaccount.com)
@@ -40,7 +40,7 @@ The below is the roles and permssions I set up, I was indescriminate, you could 
 **File location:** `~/.dbt/profiles.yml`   
 
 ```yaml
-# DBT Fundamentals Course
+# profiles.yml
 jaffle_shop:
 target: dev
 outputs:
@@ -59,11 +59,30 @@ outputs:
 
 ## 3. Environment Variables Setup
 
-**File location:** `.env` in project root. Used by `tools/gen_load.py`  
+**File location:** `.env` in project root. 
+
+Used by `tools/gen_load.py`. 
+
 ```bash  
-GCP_PROJECT_ID=your-dev-project-id   
-BQ_DATASET_ID=your-dev-dataset   
-SERVICE_ACCOUNT_KEY_PATH=/path/to/creds.json     
+# .env
+GOOGLE_DEV_CREDENTIALS=/path/to/creds.json
+GCP_PROJECT_ID=your-raw-project-id   
+BQ_DATASET_ID=your-raw-dataset
+JAFGEN_DATA_DIR=jaffle_raw_data/   
+     
+```
+
+**File location:** `.envrc` in project root.
+
+Used by `direnv` package(Optional):
+
+```bash
+# .envrc
+PATH_add tools
+source env/bin/activate
+source_env $HOME/keys/dbt_cloud_credentials
+dotenv .env
+
 ```
 
 
@@ -71,12 +90,12 @@ SERVICE_ACCOUNT_KEY_PATH=/path/to/creds.json
 
 ## 4. dbt Cloud Credentials (Optional)
 
-**File location:** `~/.dbt/dbt_cloud_credentials` or set as environment variables
+**File location:** `~/keys/dbt_cloud_credentials` or set as environment variables
 
-**How to set up:**
+**How to set up:**  
 1. Obtain your dbt Cloud credentials from your dbt Cloud account
 2. Either:
-   - Create a `~/.dbt/dbt_cloud_credentials` file, OR
+   - Create a `~/keys/dbt_cloud_credentials` file. `direnv` autoloads, OR 
    - Export these as environment variables in your shell config (`.bashrc`, `.zshrc`, etc.)
 
 **File contents:**
@@ -96,7 +115,7 @@ export DBT_CLOUD_HOST="cloud.getdbt.com"  # dbt Cloud hostname
 **File location:** `.vscode/launch.json`    
 
 **How to set up:**
-If you want to develop `tools/gen_load.py` further, this might be helpful:
+If you want to develop `tools/gen_load.py` further, this might be helpful for debug:
 
 ```json
 {
@@ -156,25 +175,9 @@ If you want to develop `tools/gen_load.py` further, this might be helpful:
 ## Summary Checklist
 - [ ] GCP Project and Service Accounts Setup
 - [ ] dbt Profiles Configuration `~/.dbt/profiles.yml`
-- [ ] Create `.env` in project root for `tools/gen_load.py`
+- [ ] Create `.envrc` and `.env` in project root, for env activation and `tools/gen_load.py`, respectively.
 - [ ] (Optional) Copy MCP config to `.vscode/mcp.json` and update with your project details
 - [ ] (Optional) Set up dbt Cloud credentials in `~/.dbt/dbt_cloud_credentials`
 - [ ] (Optional) Configure `.vscode/launch.json` with debug settings
 
 ---
-
-## Useful Commands
-
-```bash
-# Test dbt connection
-dbt debug
-
-# Generate and load data (using tools/gen_load.py)
-python tools/gen_load.py --generate --daterange-from 2026-05-15 --daterange-to 2026-08-12
-
-# Run dbt models
-dbt run
-
-# Run tests
-dbt test
-```
