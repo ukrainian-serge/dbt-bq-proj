@@ -6,12 +6,29 @@ CAUSE="from local CLI ($USER on $HOSTNAME)"
 
 # Print usage instructions
 usage() {
-  echo "Usage: $(basename "$0") [OPTIONS]"
-  echo ""
-  echo "Options:"
-  echo "  -c, --credentials PATH    Path to credentials file: $CREDENTIALS_FILE"
-  echo "  -m, --message STR         Trigger cause message (default: 'from local CLI ($USER on $HOSTNAME)')"
-  echo "  -h, --help                Show this help message and exit"
+  cat << EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Description:
+  Triggers a dbt Cloud job run via API v2.
+
+Options:
+  -c, --credentials PATH    Path to credentials file (default: $CREDENTIALS_FILE)
+  -m, --message STR         Trigger cause message (default: 'from local CLI ($USER on $HOSTNAME)')
+  -h, --help                Show this help message and exit
+
+Environment Variables:
+  The credentials file (or active shell environment) must supply:
+    DBT_CLOUD_ACCOUNT_ID    Your dbt Cloud account ID
+    DBT_CLOUD_JOB_ID        Target job ID to run
+    DBT_CLOUD_API_TOKEN     Service token or Personal Access Token
+    DBT_CLOUD_HOST          dbt Cloud host (optional, default: cloud.getdbt.com)
+
+Examples:
+  $(basename "$0")
+  $(basename "$0") -m "Triggered after dbt build in staging"
+  $(basename "$0") -c ~/keys/dbt_cloud_credentials
+EOF
   exit 0
 }
 
