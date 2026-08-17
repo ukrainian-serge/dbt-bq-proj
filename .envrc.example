@@ -1,8 +1,0 @@
-# .envrc
-## SET UP direnv for this
-
-PATH_add tools
-
-source env/bin/activate
-
-dotenv .env

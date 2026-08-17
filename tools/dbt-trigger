@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Default values
-CREDENTIALS_FILE="$GOOGLE_APPLICATION_CREDENTIALS"
+GOOGLE_CREDENTIALS_FILE="$GOOGLE_PROD_CREDENTIALS"
 CAUSE="from local CLI ($USER on $HOSTNAME)"
+
+# ALL dbt cloud credentials are sourced from .envrc actication by direnv
 
 # Print usage instructions
 usage() {
@@ -13,7 +15,7 @@ Description:
   Triggers a dbt Cloud job run via API v2.
 
 Options:
-  -c, --credentials PATH    Path to credentials file (default: $CREDENTIALS_FILE)
+  -c, --credentials PATH    Path to credentials file (default: $GOOGLE_CREDENTIALS_FILE)
   -m, --message STR         Trigger cause message (default: 'from local CLI ($USER on $HOSTNAME)')
   -h, --help                Show this help message and exit
 
@@ -27,7 +29,7 @@ Environment Variables:
 Examples:
   $(basename "$0")
   $(basename "$0") -m "Triggered after dbt build in staging"
-  $(basename "$0") -c ~/keys/dbt_cloud_credentials
+  $(basename "$0") -c $HOME/keys/dbt_cloud_credentials
 EOF
   exit 0
 }
@@ -36,7 +38,7 @@ EOF
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -c|--credentials)
-      CREDENTIALS_FILE="$2"
+      GOOGLE_CREDENTIALS_FILE="$2"
       shift 2
       ;;
     -m|--message)
@@ -55,10 +57,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Load credentials
-if [ -f "$CREDENTIALS_FILE" ]; then
-  source "$CREDENTIALS_FILE"
+if [ -f "$GOOGLE_CREDENTIALS_FILE" ]; then
+  source "$GOOGLE_CREDENTIALS_FILE"
 else
-  echo "❌ Error: Credentials file not found at $CREDENTIALS_FILE"
+  echo "❌ Error: Credentials file not found at $GOOGLE_CREDENTIALS_FILE"
   echo "Use '$(basename "$0") -h' for usage information."
   exit 1
 fi

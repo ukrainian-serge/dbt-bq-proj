@@ -5,7 +5,7 @@
 version: 2
 
 snapshots:
-  - name: orders_snapshot
+  - name: snsh_src_orders
     relation: source('jaffle_shop', 'orders')
     description: A snapshot of the orders table.
     config:

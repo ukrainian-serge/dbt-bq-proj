@@ -34,4 +34,7 @@ jaffle_raw_data/
 __pycache__/
 
 # included personal db and table names. keeping removed.
-test_code.sql
+*test_code.sql
+
+# permissions testing script
+.list-gcp-permissions

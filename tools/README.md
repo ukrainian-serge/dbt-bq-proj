@@ -1,64 +1,41 @@
-# Data Generation and Loading Utilities
+# Data Generation and Loading
 
-This directory contains the tooling used to generate sample Jaffle Shop data, load it into BigQuery, and trigger dbt Cloud jobs for production-style execution.
+Generates synthetic Jaffle Shop data and loads it into BigQuery.
 
-## What the script does
-
-The main script, [gen_load.py](gen_load.py), performs two main tasks:
-
-1. Generates synthetic raw CSV files using the `jafgen` simulation library.
-2. Loads those CSV files into a BigQuery dataset using a Google service account.
-
-It is intended to make the raw-data phase of the project repeatable and easy to run from a local environment without manual CSV uploads.
-
-## Workflow
-
-The script can run in either of these modes:
-
-- generate only data
-- generate data and load it to BigQuery
-- load existing CSVs from a configured directory
-
-### Quick Start (Recommended)
-
-Generate and load data within a specific date range:
+## Quick Start
 
 ```bash
-# Generate data for 90 days (auto-calculates 1 year generation, filters to range)
-python tools/gen_load.py --generate --daterange-from 2026-05-15 --daterange-to 2026-08-12
+# Generate and load data for a date range
+python tools/gen_load.py --generate --date-from 2026-05-15 --date-to 2026-08-12
 
-# Generate data for 2 years worth of transactions in a 6-month window
-python tools/gen_load.py --generate --daterange-from 2026-02-12 --daterange-to 2026-08-12
+# Load existing CSVs without generating
+python tools/gen_load.py --data-dir ./jaffle_raw_data
 
-# Generate 1 year without date filtering
-python tools/gen_load.py --generate --years 1
+# Use existing, but map and filter by date-from and date-to
+python tools/gen_load.py --data-dir --date-from 2026-05-15 --date-to 2026-08-12
 ```
 
-### How It Works
+## gen_load.py
 
-When you provide a date range with `--daterange-from` and `--daterange-to`:
+Entry point that orchestrates data generation and loading:
+- Uses `jafgen` to generate synthetic Jaffle Shop CSVs
+- Maps dates and filters data to specified date range
+- Loads CSVs into BigQuery tables
 
-1. **Calculate**: Script calculates years to generate (365 days per year)
-2. **Generate**: jafgen creates that many years of data
-3. **Filter**: Only rows with dates within your range are kept
+Requires `.env` with: `GOOGLE_DEV_CREDENTIALS`, `GCP_PROJECT_ID`, `BQ_DATASET_ID`, `JAFGEN_DATA_DIR`
 
-**Example**: 90-day window (2026-05-15 to 2026-08-12)
-```
-Input: --daterange-from 2026-05-15 --daterange-to 2026-08-12
-Calculation: 89 days → 1 year needed
-Generated: Full year of data from jafgen
-Filtered: Only rows with dates between 2026-05-15 and 2026-08-12
-Result: 90 days of realistic transaction data within your range
+See [src/](src/) for module details.
+
 ```
 
 ### Additional Usage Examples
 
 ```bash
 # Load existing CSVs with date range filtering
-python tools/gen_load.py --daterange-from 2026-06-12 --daterange-to 2026-08-12
+python tools/gen_load.py --date-from 2026-06-12 --date-to 2026-08-12
 
 # Append more data
-python tools/gen_load.py --generate --years 1 --write-disposition WRITE_APPEND
+python tools/gen_load.py --generate --date-from 2026-08-13 --date-to 2026-08-17 --write-disposition WRITE_APPEND
 
 # Load without date filtering
 python tools/gen_load.py
@@ -67,19 +44,19 @@ python tools/gen_load.py
 The script reads values from the environment and a dotenv file (`.env` in the project root). The expected variables are:
 
 ```bash
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/your-service-account.json
-DBT_RAW_PROJECT_ID=your-raw-project-id
-DBT_RAW_DATASET_ID=your-raw-dataset
-DBT_DATA_DIR=data/
+GOOGLE_DEV_CREDENTIALS=/path/to/your-service-account.json
+GCP_PROJECT_ID=your-raw-project-id
+BQ_DATASET_ID=your-raw-dataset
+JAFGEN_DATA_DIR=jaffle_raw_data/
 ```
 
 ## Date Range Filtering
 
-When you provide `--daterange-from` and `--daterange-to`:
+When you provide `--date-from` and `--date-to`:
 
 - Creates a date spine from both dates (inclusive)
 - Filters all rows to only keep those with dates within the range
-- Works on all datetime columns (`ordered_at`, `tweeted_at`, etc.)
+- USes and applies to `orders.csv` and `tweets.csv`
 
 **Why this approach**:
 - ✅ Preserves realistic transaction patterns within your date window
@@ -96,7 +73,7 @@ When you provide `--daterange-from` and `--daterange-to`:
 
 ## BigQuery and service-account integration
 
-This script expects a Google Cloud service account credential file and uses the Google BigQuery Python client to authenticate and load data.
+This script expects a Google Cloud service account credential file and uses the Google BigQuery Python client to authenticate and load data. See **[SETUP_GUIDE](.SETUP_GUIDE.md)**
 
 ## dbt Cloud trigger helper
 
@@ -120,14 +97,9 @@ DBT_CLOUD_API_TOKEN=your_token_here
 
 This makes it easy to quickly kick off a dbt Cloud production job after local validation, while keeping the trigger logic simple and repeatable.
 
-## Notes
-
-- The script uses `WRITE_TRUNCATE` by default, which replaces existing rows in target tables on reload, but `WRITE_APPEND` is available for incremental testing.
-- The generated data is meant for development and demo work, not production-grade data modeling.
-- If you are using a custom data directory or a different raw project, update the applicable environment variables before running the loader.
-
 ## Related documentation
-
+ 
+- **[SETUP_GUIDE](../SETUP_GUIDE.md)** 
 - [../README.md](../README.md)
 - [../profiles.example.yml](../profiles.example.yml)
 - [../.env.example](../.env.example)

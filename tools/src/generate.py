@@ -38,7 +38,7 @@ def generate_jaffle_data(cfg: Config) -> None:
                 shutil.move(str(csv_path), target_path)
                 print(f"   wrote {target_path}")
     else:
-        typer.echo("No -g/--generate flag passed. Skipping jafgen.Simulation", err=False)
+        typer.echo("No --generate/-g flag passed. Skipping jafgen.Simulation", err=False)
 
 
 def map_and_filter_dates(df_src, df_dst) -> pd.DataFrame:
@@ -101,7 +101,6 @@ def alter_orders(csv_path: Path, cfg: Config) -> None:
     df_dst.to_csv(csv_path, index=False)
 
 
-
 def alter_tweets(csv_path: Path, cfg: Config) -> None:
     """
     Dates mapped and df sliced down to cfg.date_from and cfg.date_to
@@ -110,7 +109,6 @@ def alter_tweets(csv_path: Path, cfg: Config) -> None:
     df_dst = map_and_filter_dates(df_src, cfg.s_dst)
 
     df_dst.to_csv(csv_path, index=False)
-
 
 
 def alter_items(csv_path: Path, cfg: Config) -> None:
@@ -131,7 +129,6 @@ def alter_customers(csv_path: Path, cfg: Config) -> None:
     df_dst = df_src[df_src['id'].isin(cfg.order_unique_cust)]
 
     df_dst.to_csv(csv_path, index=False)
-
 
 
 def process_generated_data(cfg: Config) -> None:

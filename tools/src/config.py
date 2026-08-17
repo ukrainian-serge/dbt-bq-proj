@@ -51,17 +51,17 @@ def load_config() -> Config:
     if ENV_PATH.exists():
         load_dotenv(dotenv_path=ENV_PATH, override=True)
 
-    key_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-    project_id = os.getenv("DBT_RAW_PROJECT_ID")
-    dataset_id = os.getenv("DBT_RAW_DATASET_ID")
-    raw_data_dir = os.getenv("DBT_DATA_DIR")
+    key_path = os.getenv("GOOGLE_DEV_CREDENTIALS")
+    project_id = os.getenv("GCP_PROJECT_ID")
+    dataset_id = os.getenv("BQ_DATASET_ID")
+    raw_data_dir = os.getenv("JAFGEN_DATA_DIR")
 
     # 1. Validation & Early Exit
     if not key_path or not project_id or not dataset_id:
         missing = []
-        if not key_path: missing.append("GOOGLE_APPLICATION_CREDENTIALS")
-        if not project_id: missing.append("DBT_RAW_PROJECT_ID")
-        if not dataset_id: missing.append("DBT_RAW_DATASET_ID")
+        if not key_path: missing.append("GOOGLE_DEV_CREDENTIALS")
+        if not project_id: missing.append("GCP_PROJECT_ID")
+        if not dataset_id: missing.append("BQ_DATASET_ID")
         typer.echo(f"❌ Missing required environment variables: {', '.join(missing)}", err=True)
         raise typer.Exit(code=1)
 
