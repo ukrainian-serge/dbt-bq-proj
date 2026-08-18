@@ -2,7 +2,7 @@
 
 This project builds a Jaffle Shop-style analytics stack with dbt Fusion, BigQuery, and a lightweight local developer workflow. The model layer covers staging, intermediate logic, and marts, while the surrounding setup supports raw-data generation, service-account authentication, and dbt Cloud-triggered production runs.
 
-See **[SETUP_GUIDE](.SETUP_GUIDE.md)**
+See **[SETUP_GUIDE](./SETUP_GUIDE.md)**
 
 ## Project overview
 
@@ -86,7 +86,7 @@ This script is useful when a developer wants to start a dbt Cloud job without ma
 
 ## Related documentation
 
-- **[SETUP_GUIDE](.SETUP_GUIDE.md)**
+- **[SETUP_GUIDE](./SETUP_GUIDE.md)**
 - [tools/README.md](tools/README.md)
 - [tools/gen_load.py](tools/gen_load.py)
 - [tools/dbt-trigger](tools/dbt-trigger)
