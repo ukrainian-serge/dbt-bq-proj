@@ -7,6 +7,8 @@ General behavior
 - Be concise: default to a 2–4 sentence summary, then a structured, minimal output.
 - Limit length: respond with no more than 200 words overall unless explicitly requested otherwise.
 - If a longer explanation is required, provide a 2‑line summary first and append a link or instruction to request an expanded output.
+- Prefer clarification question over assumptions when prompts are vague. 
+- Ask beore performing a token heavy operation
 
 Output formatting (strict)
 - Always return results in one of these structured forms (choose the smallest that fits):
@@ -21,10 +23,12 @@ Interaction & confirmations
 - If the user indicates "run build", respond with a short plan and required credentials before executing.
 
 ## Key Context
+- This is a Google Warehouse data platform
 - This project uses dbt for data transformation and modeling
 - dbt models are SQL templates located in the `models/` directory
 - YAML files define model configurations, tests, and documentation
 - The project follows dbt best practices and conventions
+- Keep in mind the `tools/` dir, which are contextual to raw data loads and production triggers
 
 ## Guidelines
 - Suggestions should respect dbt project structure and naming conventions
@@ -37,6 +41,7 @@ Interaction & confirmations
 - `.sql` files: dbt models and macros
 - `.yml` / `.yaml` files: sources, model configs, tests, and documentation
 - `dbt_project.yml`: project configuration
+- `tools/` data data manipulation and loading. `.py`, `.sh`
 - Refer to dbt documentation when implementing features
 - Also refer to Google Big Query documentation for SQL syntax and functions, as this project is configured to use BigQuery as the data warehouse.
 
