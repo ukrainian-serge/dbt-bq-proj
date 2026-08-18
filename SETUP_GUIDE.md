@@ -28,7 +28,7 @@ The below is the roles and permssions I set up, I was indiscriminate, you could 
 
     ```bash
     ------------------------------------------
-    1. Copilot BQ Reader Roles (ai-sa-account@your-project-id.iam.gserviceaccount.com)
+    Ai Agent BQ Reader Roles (ai-sa-account@your-project-id.iam.gserviceaccount.com)
     ------------------------------------------
     roles/bigquery.dataViewer
     roles/bigquery.metadataViewer
@@ -90,7 +90,7 @@ dotenv .env
 
 ## 4. dbt Cloud Credentials (Optional)
 
-**File location:** `~/keys/dbt_cloud_credentials` or set as environment variables
+**File location:** `~/keys/dbt_cloud_credentials`
 
 **How to set up:**  
 1. Obtain your dbt Cloud credentials from your dbt Cloud account
