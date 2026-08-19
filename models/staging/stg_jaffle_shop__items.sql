@@ -1,10 +1,10 @@
 WITH source AS (
     SELECT * FROM {{ source('jaffle_shop', 'items') }}
-)
+),
 
-, final AS (
+final AS (
     SELECT
-        id as item_id,
+        id AS item_id,
         order_id,
         sku
     FROM source

@@ -1,21 +1,21 @@
 WITH source AS (
 
-select * from {{ source('jaffle_shop', 'customers') }}
+    SELECT * FROM {{ source('jaffle_shop', 'customers') }}
 
-)
+),
 
-, trimmed as (
-    SELECT 
-        id as customer_id,
-        TRIM(name) as first_and_last_name
+trimmed AS (
+    SELECT
+        id AS customer_id,
+        TRIM(name) AS first_and_last_name
     FROM source
-)
+),
 
-, final as (
-    SELECT 
+final AS (
+    SELECT
         customer_id,
-        split(first_and_last_name, ' ')[safe_offset(0)] as first_name,
-        split(first_and_last_name, ' ')[safe_offset(1)] as last_name,
+        SPLIT(first_and_last_name, ' ')[SAFE_OFFSET(0)] AS first_name,
+        SPLIT(first_and_last_name, ' ')[SAFE_OFFSET(1)] AS last_name
     FROM trimmed
 )
 

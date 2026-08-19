@@ -1,17 +1,18 @@
-
-SELECT 
+SELECT
     -- *
---   MAX(CAST(ordered_at AS DATETIME)) as raw_table_max, 
---   MIN(CAST(ordered_at AS DATETIME)) as raw_table_min 
---   MAX(CAST(opened_at AS DATETIME)) as raw_table_max, 
---   MIN(CAST(opened_at AS DATETIME)) as raw_table_min 
--- MAX(CAST(tweeted_at AS DATETIME)) as raw_table_max,
--- MIN(CAST(tweeted_at AS DATETIME)) as raw_table_min 
--- COUNT(DISTINCT  DATE(tweeted_at))
-COUNT(DISTINCT  DATE(ordered_at))
+    -- MAX(CAST(ordered_at AS DATETIME)) as raw_table_max, 
+    -- MIN(CAST(ordered_at AS DATETIME)) as raw_table_min 
+    -- MAX(CAST(opened_at AS DATETIME)) as raw_table_max, 
+    -- MIN(CAST(opened_at AS DATETIME)) as raw_table_min 
+    -- MAX(CAST(tweeted_at AS DATETIME)) as raw_table_max,
+    -- MIN(CAST(tweeted_at AS DATETIME)) as raw_table_min 
+    -- COUNT(DISTINCT  DATE(tweeted_at))
+    -- COUNT(DISTINCT  DATE(ordered_at))
+    MIN(order_placed_at) AS min_order_placed_at
+    , MAX(order_placed_at) AS max_order_placed_at
 -- FROM `raw-data-503215.jaffle_shop.tweets` 
-FROM `raw-data-503215.jaffle_shop.orders` 
-
+-- FROM `raw-data-503215.jaffle_shop.orders`
+FROM `dbt-dev-503215.dbt_skamilchu.fct_customer_orders`
 
 -- SELECT 
 --   MAX(CAST(ordered_at AS DATETIME)) as int_table_max, 
@@ -55,10 +56,10 @@ FROM `raw-data-503215.jaffle_shop.orders`
 --         tax_paid, 
 --         order_total
 --     FROM source
-    
+
 
 --     )
-    
+
 -- SELECT * FROM final
 -- WHERE PARSE_DATETIME('%Y-%m-%dT%H:%M:%S', ordered_at) <= current_date()
 -- ORDER BY ordered_at DESC

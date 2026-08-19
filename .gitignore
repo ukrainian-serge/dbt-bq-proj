@@ -2,6 +2,7 @@
 .env
 .envrc
 profiles.yml
+.sqlfluff
 
 #Testing
 */test_code.sql

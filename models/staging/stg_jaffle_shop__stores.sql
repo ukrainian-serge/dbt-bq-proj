@@ -4,11 +4,11 @@ WITH source AS (
 
 
 , final AS (
-    SELECT 
-        id as store_id,
-        name as store_name,
-        CAST(opened_at AS DATETIME) as opened_at,
-        CAST(tax_rate AS FLOAT64) as tax_rate
+    SELECT
+        id AS store_id
+        , name AS store_name
+        , CAST(opened_at AS DATETIME) AS opened_at
+        , CAST(tax_rate AS FLOAT64) AS tax_rate
     FROM source
 )
 

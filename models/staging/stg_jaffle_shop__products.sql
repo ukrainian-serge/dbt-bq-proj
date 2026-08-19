@@ -3,14 +3,13 @@ WITH source AS (
 )
 
 
-
 , final AS (
-    SELECT 
-        sku,
-        name as product_name,
-        type as product_type,
-        SAFE_DIVIDE(CAST(price AS FLOAT64), 100) as price,
-        description
+    SELECT
+        sku
+        , name AS product_name
+        , type AS product_type
+        , description
+        , SAFE_DIVIDE(CAST(price AS FLOAT64), 100) AS price
     FROM source
 )
 
