@@ -3,6 +3,9 @@
 .envrc
 profiles.yml
 
+#Testing
+*/test_code.sql
+
 # VS Code
 .vscode/
 
@@ -29,6 +32,7 @@ Thumbs.db
 # generated data
 *data/
 jaffle_raw_data/
+*.csv
 
 # cache
 __pycache__/
