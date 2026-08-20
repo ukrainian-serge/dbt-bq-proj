@@ -4,7 +4,7 @@ Core modules for `gen_load.py`:
 
 ## config.py
 Loads environment configuration and initializes BigQuery client.
-- Reads `.env` (project_id, dataset_id, service account key path)
+- Reads env variabls (project_id, dataset_id, service account key path)
 - Stores CLI flags and state in `Config` dataclass
 - Creates BigQuery client
 
