@@ -1,17 +1,29 @@
-
+# ==============================================================================
 # CORE PIPELINE & TRANSFORMATIONS
+# ==============================================================================
 dbt-bigquery==1.12.0
 sqlfluff==4.3.0
 
-# DATA GENERATION & SCRIPTS (Used by gen_load.py)
+# ==============================================================================
+# DATA GENERATION & SCRIPTS (gen_load.py)
+# ==============================================================================
+pandas==3.0.5
+google-cloud-bigquery==3.42.2
+google-auth==2.56.2
+python-dotenv==1.2.3
+typer==0.27.1
 jafgen==0.4.14
 holidays==0.102
 
-# OPTIONAL: 
-# VS CODE & MCP SERVERS (Uncomment if setting up Copilot MCP)
+
+# ==============================================================================
+# OPTIONAL: VS CODE & MCP SERVERS (Uncomment if setting up Copilot MCP)
+# ==============================================================================
 # dbt-core-mcp==1.7.1
 
-# TESTING, DEBUGGING & INTERACTIVE SHELL
+# ==============================================================================
+# OPTIONAL: TESTING & INTERACTIVE SHELL
+# ==============================================================================
 # ipython==8.12.3
 # pytest==9.1.1
 # pdbpp==0.12.1
