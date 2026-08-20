@@ -1,0 +1,24 @@
+{
+  "servers": {
+    "dbt": {
+      "command": "dbt-core-mcp",
+      "args": [
+        "--project-dir",
+        "${workspaceFolder}"
+      ]
+    },
+    "bigquery": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-bigquery"
+      ],
+      "env": {
+        "BIGQUERY_PROJECT_ID": "{env:BQ_DEV_PROJECT_ID}",
+
+        "GOOGLE_APPLICATION_CREDENTIALS": "{env:GCP_SA_AGENT_CREDS}" // THIS IS SET BY DIRENV in this project
+      }
+    }
+  }
+}
