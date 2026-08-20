@@ -1,0 +1,24 @@
+[sqlfluff]
+dialect = bigquery
+templater = jinja
+fix_even_unparsable = True
+
+# Do NOT ignore layout.commas or parsing here, or auto-fix will skip them
+# ignore = layout.long_lines
+
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+ignore_template_errors = True
+
+[sqlfluff:indentation]
+implicit_indents = allow
+
+[sqlfluff:rules:layout.long_lines]
+ignore_comment_lines = True
+ignore_comment_clauses = True
+
+[sqlfluff:layout:type:comma]
+# Forces trailing commas to automatically move to the front of the next line
+line_position = leading
+spacing_before = touch
