@@ -44,7 +44,7 @@ The below is the roles and permssions I set up, I was indiscriminate, you could 
 jaffle_shop:
 target: dev
 outputs:
-    dev:
+  dev:
     type: bigquery  # We are using BigQuery for this course
     method: service-account  # Authentication method
     project: YOUR-DEV-PROJ  # BigQuery project ID from Google Cloud Console
@@ -59,29 +59,39 @@ outputs:
 
 ## 3. Environment Variables Setup
 
-**File location:** `.env` in project root. 
-
-Used by `tools/gen_load.py`. 
-
-```bash  
-# .env
-GOOGLE_DEV_CREDENTIALS=/path/to/creds.json
-GCP_PROJECT_ID=your-raw-project-id   
-BQ_DATASET_ID=your-raw-dataset
-JAFGEN_DATA_DIR=jaffle_raw_data/   
-     
-```
-
 **File location:** `.envrc` in project root.
 
-Used by `direnv` package(Optional):
+
 
 ```bash
 # .envrc
-PATH_add tools
-source env/bin/activate
-source_env $HOME/keys/dbt_cloud_credentials
-dotenv .env
+
+# Dev / Default Environment (Used by dbt, Python, & VS Code mcp.json)
+export GCP_SA_DEV_CREDS="/path/to/prod-service-account.json"
+export BQ_DEV_PROJECT_ID="your-dev-proj"
+export BQ_DEV_DATASET="your-dev-dataset"
+
+# Raw/Source setup. Needed for gen_load.py
+export GCP_SA_RAW_CREDS="/path/to/raw-service-account.json" 
+export BQ_RAW_PROJECT_ID="your-raw-proj"
+export BQ_RAW_DATASET="your-raw-dataset"
+export JAFGEN_DATA_DIR="jaffle_raw_data/"
+
+# Production Environment (Optional local reference)
+export GCP_SA_PROD_CREDS="/path/to/prod-service-account.json"
+export BQ_PROD_PROJECT_ID="your-prod-proj"
+export BQ_PROD_DATASET="your-prod-dataset"
+
+
+# Agent Service Account(Keep minimal roles and permissions)
+export GCP_SA_AGENT_CREDS="/path/to/agent-service-account.json"
+
+PATH_add tools # add pathing to tools/          
+source env/bin/activate # activate python env
+source_env $HOME/keys/dbt_cloud_credentials # (Optional) Import for dbt Cloud
+
+# (Optional) just in case you need a .env
+# env | grep -E '^(GCP_SA_|BQ_|JAFGEN_)' > .env 
 
 ```
 
@@ -150,7 +160,7 @@ If you want to develop `tools/gen_load.py` further, this might be helpful for de
 {
   "servers": {
     "dbt": {
-      "command": "dbt-core-mcp",    ## installed by requirements.txt
+      "command": "dbt-core-mcp", 
       "args": [
         "--project-dir",
         "${workspaceFolder}"
@@ -164,8 +174,8 @@ If you want to develop `tools/gen_load.py` further, this might be helpful for de
         "@modelcontextprotocol/server-bigquery"
       ],
       "env": {
-        "BIGQUERY_PROJECT_ID": "your-gcp-project-id",
-        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/your/service-account-key.json"
+        "BIGQUERY_PROJECT_ID": "{env:BQ_DEV_PROJECT_ID}",
+        "GOOGLE_APPLICATION_CREDENTIALS": "{env:GCP_SA_AGENT_CREDS}" 
       }
     }
   }
@@ -175,8 +185,8 @@ If you want to develop `tools/gen_load.py` further, this might be helpful for de
 ## Summary Checklist
 - [ ] GCP Project and Service Accounts Setup
 - [ ] dbt Profiles Configuration `~/.dbt/profiles.yml`
-- [ ] Create `.envrc` and `.env` in project root, for env activation and `tools/gen_load.py`, respectively.
-- [ ] (Optional) Copy MCP config to `.vscode/mcp.json` and update with your project details
+- [ ] Create `.envrc`, and optionally, `.env`
+- [ ] (Optional) `.vscode/mcp.json`
 - [ ] (Optional) Set up dbt Cloud credentials in `~/.dbt/dbt_cloud_credentials`
 - [ ] (Optional) Configure `.vscode/launch.json` with debug settings
 

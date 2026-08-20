@@ -22,7 +22,8 @@ Entry point that orchestrates data generation and loading:
 - Maps dates and filters data to specified date range
 - Loads CSVs into BigQuery tables
 
-Requires `.env` with: `GOOGLE_DEV_CREDENTIALS`, `GCP_PROJECT_ID`, `BQ_DATASET_ID`, `JAFGEN_DATA_DIR`
+Requires `.envrc` with: `GCP_SA_PROD_CREDS`, `BQ_RAW_PROJECT_ID`, `BQ_RAW_DATASET`, `JAFGEN_DATA_DIR`
+
 
 See [src/](src/) for module details.
 
@@ -41,13 +42,16 @@ python tools/gen_load.py --generate --date-from 2026-08-13 --date-to 2026-08-17 
 python tools/gen_load.py
 ```
 
-The script reads values from the environment and a dotenv file (`.env` in the project root). The expected variables are:
+The script reads values from the environment, which are set by `.envrc` via direnv.
 
 ```bash
-GOOGLE_DEV_CREDENTIALS=/path/to/your-service-account.json
-GCP_PROJECT_ID=your-raw-project-id
-BQ_DATASET_ID=your-raw-dataset
+# .envrc
+...
+GCP_SA_RAW_CREDS=/path/to/your-service-account.json
+BQ_RAW_PROJECT_ID=your-raw-project-id
+BQ_RAW_DATASET=your-raw-dataset
 JAFGEN_DATA_DIR=jaffle_raw_data/
+...
 ```
 
 ## Date Range Filtering
@@ -82,8 +86,8 @@ The repository also includes [dbt-trigger](dbt-trigger), a shell utility for sta
 It looks for the dbt Cloud identifiers and API token in the credentials environment file and then calls the dbt Cloud v2 job run endpoint:
 
 ```bash
-./tools/dbt-trigger -c /path/to/credentials.env
-./tools/dbt-trigger -m "manual run from local dev" -c /path/to/credentials.env
+./tools/dbt-trigger -c /path/to/credentials
+./tools/dbt-trigger -m "manual run from local dev" -c /path/to/credentials
 ```
 
 The script expects values such as:
@@ -101,5 +105,3 @@ This makes it easy to quickly kick off a dbt Cloud production job after local va
  
 - **[SETUP_GUIDE](../SETUP_GUIDE.md)** 
 - [../README.md](../README.md)
-- [../profiles.example.yml](../profiles.example.yml)
-- [../.env.example](../.env.example)
