@@ -2,9 +2,9 @@
       database = "dbt-dev-503215",
       schema = "dbt_skamilchu",
       identifier = "fct_customer_orders_legacy"
-) %}
+) %} 
 
-{% set dbt_relation = ref('fct_customer_orders') %}
+{% set dbt_relation = ref('fct_customer_orders') %} 
 
 {% if execute %}
 {{ audit_helper.compare_all_columns(
@@ -13,4 +13,4 @@
     primary_key = "order_id",
 ) }}
 
-{% endif %}
+{% endif %} 

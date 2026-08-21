@@ -1,16 +1,11 @@
-WITH source AS (
-    SELECT * FROM {{ source('jaffle_shop', 'tweets') }}
-)
+with
+    source as (select * from {{ source("jaffle_shop", "tweets") }}),
+    final as (
+        select
+            id as tweet_id, user_id, cast(tweeted_at as datetime) as tweeted_at, content
 
-, final AS (
-    SELECT
-        id AS tweet_id
-        , user_id
-        , CAST(tweeted_at AS DATETIME) AS tweeted_at
-        , content
+        from source
+    )
 
-    FROM source
-)
-
-
-SELECT * FROM final
+select *
+from final

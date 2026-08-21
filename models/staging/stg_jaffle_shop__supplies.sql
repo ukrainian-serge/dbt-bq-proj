@@ -1,15 +1,14 @@
-WITH source AS (
-    SELECT * FROM {{ source('jaffle_shop', 'supplies') }}
-)
+with
+    source as (select * from {{ source("jaffle_shop", "supplies") }}),
+    final as (
+        select
+            id as supply_id,
+            name as supplies_name,
+            cast(perishable as boolean) as perishable,
+            sku,
+            safe_divide(cast(cost as float64), 100) as cost
+        from source
+    )
 
-, final AS (
-    SELECT
-        id AS supply_id
-        , name AS supplies_name
-        , CAST(perishable AS BOOLEAN) AS perishable
-        , sku
-        , SAFE_DIVIDE(CAST(cost AS FLOAT64), 100) AS cost
-    FROM source
-)
-
-SELECT * FROM final
+select *
+from final

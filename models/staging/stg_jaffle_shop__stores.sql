@@ -1,15 +1,13 @@
-WITH source AS (
-    SELECT * FROM {{ source('jaffle_shop', 'stores') }}
-)
+with
+    source as (select * from {{ source("jaffle_shop", "stores") }}),
+    final as (
+        select
+            id as store_id,
+            name as store_name,
+            cast(opened_at as datetime) as opened_at,
+            cast(tax_rate as float64) as tax_rate
+        from source
+    )
 
-
-, final AS (
-    SELECT
-        id AS store_id
-        , name AS store_name
-        , CAST(opened_at AS DATETIME) AS opened_at
-        , CAST(tax_rate AS FLOAT64) AS tax_rate
-    FROM source
-)
-
-SELECT * FROM final
+select *
+from final
