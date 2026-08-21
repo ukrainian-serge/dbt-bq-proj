@@ -13,12 +13,29 @@
     "python.analysis.autoImportCompletions": true,
 
     // SQLFluff configuration
-    "sqlfluff.config": "${workspaceFolder}/.sqlfluff",
-    "sqlfluff.linter.run": "onSave",
+
     "editor.codeActionsOnSave": {
         "source.fixAll.sqlfluff": "explicit"
     
-}
+    },
 
+    "files.associations": {
+        "*.sql": "sql",
+        // "*.yml": "jinja-yaml",
+        // "*.yaml": "jinja-yaml"
+    },
 
+    "[jinja-sql]": {
+        "editor.defaultFormatter": "yassun7010.vscode-shandy-sqlfmt",
+        "editor.formatOnSave": true,
+
+    },
+
+    "[sql]": {
+        "editor.defaultFormatter": "yassun7010.vscode-shandy-sqlfmt",
+        "editor.formatOnSave": true
+    },
+
+    "djlint.enableLinting": true,
+    "djlint.profile": "jinja"
 }

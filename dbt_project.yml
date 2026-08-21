@@ -41,8 +41,7 @@ models:
       +enabled: false     ##### takes over 20 minutes of startup time to run, so we disable it by default
 
 seeds:
-  jaffle_shop:
-    +enabled: false
+  +enabled: false
 
 analyses:
   +enabled: false
