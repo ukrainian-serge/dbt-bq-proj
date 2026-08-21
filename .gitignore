@@ -8,7 +8,7 @@ profiles.yml
 */test_code.sql
 
 # VS Code
-# .vscode/ ### including this now. lots of good setups in here
+.vscode/ ### including this now. lots of good setups in here
 
 # Python virtual environments
 venv/
@@ -37,9 +37,6 @@ jaffle_raw_data/
 
 # cache
 __pycache__/
-
-# included personal db and table names. keeping removed.
-*test_code.sql
 
 # permissions testing script
 .list-gcp-permissions
