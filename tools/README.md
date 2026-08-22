@@ -13,6 +13,7 @@ python tools/gen_load.py --data-dir ./jaffle_raw_data
 
 # Use existing, but map and filter by date-from and date-to
 python tools/gen_load.py --data-dir --date-from 2026-05-15 --date-to 2026-08-12
+
 ```
 
 ## gen_load.py
@@ -26,8 +27,6 @@ Requires `.envrc` with: `GCP_SA_PROD_CREDS`, `BQ_RAW_PROJECT_ID`, `BQ_RAW_DATASE
 
 
 See [src/](src/) for module details.
-
-```
 
 ### Additional Usage Examples
 
