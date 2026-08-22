@@ -6,23 +6,13 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     
-    // Python & Pylance configuration
     "python.languageServer": "Pylance",
     "python.analysis.typeCheckingMode": "basic",
 
     "python.analysis.autoImportCompletions": true,
 
-    // SQLFluff configuration
-
-    "editor.codeActionsOnSave": {
-        "source.fixAll.sqlfluff": "explicit"
-    
-    },
-
     "files.associations": {
         "*.sql": "sql",
-        // "*.yml": "jinja-yaml",
-        // "*.yaml": "jinja-yaml"
     },
 
     "[jinja-sql]": {
@@ -36,6 +26,5 @@
         "editor.formatOnSave": true
     },
 
-    "djlint.enableLinting": true,
-    "djlint.profile": "jinja"
+
 }
