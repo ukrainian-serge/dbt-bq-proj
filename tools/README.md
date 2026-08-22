@@ -32,6 +32,7 @@ See [src/](src/) for module details.
 ### Additional Usage Examples
 
 ```bash
+# cli
 # Load existing CSVs with date range filtering
 python tools/gen_load.py --date-from 2026-06-12 --date-to 2026-08-12
 
@@ -40,6 +41,7 @@ python tools/gen_load.py --generate --date-from 2026-08-13 --date-to 2026-08-17 
 
 # Load without date filtering
 python tools/gen_load.py
+
 ```
 
 The script reads values from the environment, which are set by `.envrc` via direnv.
