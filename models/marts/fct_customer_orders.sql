@@ -29,6 +29,7 @@ with
             customer_mapper.first_name as customer_first_name,
             customer_mapper.last_name as customer_last_name,
             orders.transaction_seq,
+
             orders.customer_sales_seq,
             orders.customer_lifetime_value,
             orders.customer_first_order_date as fdos,

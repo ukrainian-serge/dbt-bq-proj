@@ -3,7 +3,7 @@ with
     final as (
         select
             sku,
-            name as product_name,
+            trim(replace(name, '?', '')) as product_name,
             type as product_type,
             description,
             safe_divide(cast(price as float64), 100) as price

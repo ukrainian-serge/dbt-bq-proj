@@ -1,64 +1,26 @@
-select table_catalog, table_schema, table_name
-from `dbt-dev-503215.dbt_skamilchu.INFORMATION_SCHEMA.TABLES`
-where
-    table_name = 'fct_customer_orders_legacy'
+{% set get_products_query %}
+    select distinct product_name 
+    from {{ ref("stg_jaffle_shop__products") }} 
+    where product_name is not null 
+    order by 1
+{% endset %}
 
-    -- SELECT
-    -- *
-    -- MAX(CAST(ordered_at AS DATETIME)) as raw_table_max,
-    -- MIN(CAST(ordered_at AS DATETIME)) as raw_table_min
-    -- MAX(CAST(opened_at AS DATETIME)) as raw_table_max,
-    -- MIN(CAST(opened_at AS DATETIME)) as raw_table_min
-    -- MAX(CAST(tweeted_at AS DATETIME)) as raw_table_max,
-    -- MIN(CAST(tweeted_at AS DATETIME)) as raw_table_min
-    -- COUNT(DISTINCT  DATE(tweeted_at))
-    -- COUNT(DISTINCT  DATE(ordered_at))
-    -- MIN(order_placed_at) AS min_order_placed_at
-    -- , MAX(order_placed_at) AS max_order_placed_at
-    -- FROM `raw-data-503215.jaffle_shop.tweets`
-    -- FROM `raw-data-503215.jaffle_shop.orders`
-    -- FROM `dbt-dev-503215.dbt_skamilchu.fct_customer_orders`
-    -- SELECT
-    -- MAX(CAST(ordered_at AS DATETIME)) as int_table_max,
-    -- MIN(CAST(ordered_at AS DATETIME)) as int_table_min,
-    -- FROM `dbt-dev-503215.dbt_skamilchu.int_customer_orders` LIMIT 1000
-    -- SELECT
-    -- MAX(CAST(order_placed_at AS DATETIME)) as fct_table_max,
-    -- MIN(CAST(order_placed_at AS DATETIME)) as fct_table_min,
-    -- FROM `dbt-dev-503215.dbt_skamilchu.fct_customer_orders` LIMIT 1000
-    -- INSERT INTO `raw-data-503215.jaffle_shop.orders` (id, customer, ordered_at,
-    -- store_id, subtotal, tax_paid, order_total)
-    -- WITH source AS (
-    -- SELECT
-    -- id,
-    -- customer,
-    -- ordered_at,
-    -- store_id,
-    -- subtotal,
-    -- tax_paid,
-    -- order_total
-    -- FROM
-    -- `raw-data-503215.jaffle_shop.orders`
-    -- WHERE
-    -- STARTS_WITH(ordered_at, '2019')
-    -- )
-    -- , final AS (
-    -- SELECT
-    -- id,
-    -- customer,
-    -- CAST(
-    -- FORMAT_TIMESTAMP(
-    -- '%Y-%m-%dT%H:%M:%S',
-    -- DATETIME_ADD(PARSE_DATETIME('%Y-%m-%dT%H:%M:%S', ordered_at), INTERVAL 7 YEAR)
-    -- ) AS STRING
-    -- ) AS ordered_at,
-    -- store_id,
-    -- subtotal,
-    -- tax_paid,
-    -- order_total
-    -- FROM source
-    -- )
-    -- SELECT * FROM final
-    -- WHERE PARSE_DATETIME('%Y-%m-%dT%H:%M:%S', ordered_at) <= current_date()
-    -- ORDER BY ordered_at DESC
-    -- ;
+{% if execute %}
+    {% set results = run_query(get_products_query) %}
+    {% set product_names = results.columns[0].values() %}
+{% endif %}
+
+{# If the query returns empty or runs during dbt compile, use default fallbacks #}
+{# {% if not product_names or product_names | length == 0 %}
+    {% set product_names = ["item_a", "item_b"] %}
+{% endif %} #}
+select
+    store_id,
+    {% for product_name in product_names %}
+        sum(case when product_name = '{{ product_name }}' then order_total else 0 end)
+        as total_{{ product_name | replace("-", "_") | replace(" ", "_") | lower }}_sales
+        {% if not loop.last %},{% endif %}
+    {% endfor %}
+
+from {{ ref("stg_jaffle_shop__orders") }}
+group by 1
