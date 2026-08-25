@@ -5,7 +5,7 @@ profiles.yml
 
 
 #Testing
-*/test_code.sql
+*models/test_code.sql
 
 # VS Code
 # .vscode/ ### including this now. lots of good setups in here
