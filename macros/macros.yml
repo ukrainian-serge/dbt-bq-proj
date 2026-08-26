@@ -2,17 +2,58 @@ version: 2
 
 macros:
 
+  - name: clean_stale_models
+    description: Drops unused tables/views from a schema based on last modified time.
+    arguments:
+      - name: database
+        type: string
+        description: Target database (default target.database).
+      - name: schema
+        type: string
+        description: Target schema (default target.schema).
+      - name: days
+        type: int
+        description: Age threshold in days for cleanup (default 7).
+      - name: dry_run
+        type: bool
+        description: Preview cleanup commands without executing (default True).
+
   - name: generate_schema_name
-    description: |
-      Custom schema naming macro that determines where dbt models and functions are deployed.
-      Handles different schema assignment logic based on resource type:
-      - For BigQuery UDFs: uses the custom schema name exactly (e.g., 'shared_udfs')
-      - For models/seeds: appends custom schema to the personal schema 
-      - Without custom schema: uses the personal schema
+    description: Custom schema naming logic for models and functions.
     arguments:
       - name: custom_schema_name
         type: string
-        description: Optional custom schema name to apply. Can be null.
+        description: Optional custom schema name; ignored in dev target.
       - name: node
+        type: object
+        description: The dbt node object.
+
+  - name: grant_select
+    description: Grants BigQuery role access to a schema.
+    arguments:
+      - name: schema
         type: string
-        description: The dbt node object containing resource_type and other metadata.
+        description: Schema name (default target.dataset).
+      - name: database
+        type: string
+        description: Database name (default target.schema).
+      - name: role
+        type: string
+        description: BigQuery role (default roles/bigquery.dataViewer).
+      - name: principal
+        type: string
+        description: Email or service account to grant access.
+
+  - name: union_tables_by_prefix
+    description: Discovers and logs tables matching a prefix pattern.
+    arguments:
+      - name: database
+        type: string
+        description: Database name.
+      - name: schema
+        type: string
+        description: Schema name.
+      - name: prefix
+        type: string
+        description: Table name prefix to match.
+
