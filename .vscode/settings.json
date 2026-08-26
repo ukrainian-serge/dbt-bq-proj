@@ -13,10 +13,10 @@
 
     "python.analysis.autoImportCompletions": true,
 
-    // "files.associations": {
-        // "*.sql": "jinja-sql",
+    "files.associations": {
+        "*.sql": "jinja-sql",
         // "*.sql": "sql",
-    // },
+    },
 
     // DBT FUSION ALREADY FORMATS
     // "[jinja-sql]": {
