@@ -1,0 +1,27 @@
+version: 2
+
+macros:
+  - name: cents_to_dollars
+    description: Converts a numeric column value from cents to dollars with optional decimal rounding.
+    arguments:
+      - name: column_name
+        type: integer
+        description: The column or expression in cents to convert to dollars.
+      - name: decimals
+        type: integer
+        description: Number of decimal places to round to. Defaults to 0.
+
+  - name: generate_schema_name
+    description: |
+      Custom schema naming macro that determines where dbt models and functions are deployed.
+      Handles different schema assignment logic based on resource type:
+      - For BigQuery UDFs: uses the custom schema name exactly (e.g., 'shared_udfs')
+      - For models/seeds: appends custom schema to the personal schema 
+      - Without custom schema: uses the personal schema
+    arguments:
+      - name: custom_schema_name
+        type: string
+        description: Optional custom schema name to apply. Can be null.
+      - name: node
+        type: string
+        description: The dbt node object containing resource_type and other metadata.
