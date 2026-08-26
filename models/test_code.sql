@@ -34,14 +34,11 @@ group by 1 #}
 FROM `dbt-dev-503215.INFORMATION_SCHEMA.SCHEMATA_SHARED_TO_SUBSUMED`
 WHERE table_schema = 'int_store_products'; #}
 
+{# {% if execute %}
+    {{ log("\n=== AVAILABLE MODEL / NODE KEYS ===", info=True) }}
+    {% for key in model.keys() | sort %}
+        {{ log(" - " ~ key, info=True) }}
+    {% endfor %}
+    {{ log("===================================\n", info=True) }}
+{% endif %} #}
 
-{# with cte as ( #}
-    select 
-        *
-    from `{{ target.database }}`.`{{ target.schema }}`.INFORMATION_SCHEMA.TABLES
-{# )
-
-select
-    object_type,
-    concat('DROP ', object_type, ' `', project_id, '`.`', dataset_id, '`.`', table_id, '`;') as drop_statement
-from cte #}
