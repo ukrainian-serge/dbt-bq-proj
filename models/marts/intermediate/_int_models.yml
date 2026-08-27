@@ -2,10 +2,16 @@ version: 2
 
 models:
   - name: int_customer_orders
+    config:
+      contract:
+        enforced: true
     description: ""
     columns:
       - name: order_id
         data_type: string
+        constraints:
+          - type: not_null
+          # - type: unique
         description: ""
 
       - name: customer_id
@@ -51,4 +57,3 @@ models:
       - name: customer_avg_non_returned_order_value
         data_type: float64
         description: ""
-

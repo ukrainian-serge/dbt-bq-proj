@@ -5,17 +5,6 @@
     default=['product_test_dummy1', 'product_test_dummy2', 'product_test_dummy3']
 ) %}
 
-{# {% set get_products_query %}
-    select distinct product_name 
-    from {{ ref("stg_jaffle_shop__products") }} 
-    where product_name is not null 
-    order by 1
-{% endset %}
-
-{% if execute %}
-    {% set results = run_query(get_products_query) %}
-    {% set product_names = results.columns[0].values() %}
-{% endif %} #}
 
 with
     cte_orders as (select * from {{ ref("stg_jaffle_shop__orders") }}),

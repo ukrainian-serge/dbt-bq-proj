@@ -2,7 +2,6 @@
     config(
         materialized="table",
         event_time="ordered_at",
-        full_refresh=false,
         partition_by={
             "field": "ordered_at",
             "data_type": "datetime",

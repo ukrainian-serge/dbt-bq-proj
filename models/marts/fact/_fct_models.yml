@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: fct_customer_orders
+    description: Fact table containing customer order details with incremental microbatch materialization
+    config:
+      materialized: incremental
+      incremental_strategy: microbatch
+      event_time: order_placed_at
+      begin: "2026-08-04"
+      batch_size: day
+      unique_key: order_id
+      lookback: 2
+      partition_by:
+        field: order_placed_at
+        data_type: datetime
+        granularity: day
+    columns:
+      - name: order_id
+        description: Unique identifier for each order
+      - name: customer_id
+        description: Foreign key reference to the customer
+      - name: order_placed_at
+        description: Timestamp when the order was placed; used for event time and partitioning
+      - name: total_amount_paid
+        description: Total amount paid for the order
+      - name: payment_finalized_date
+        description: Date when the payment was finalized
+      - name: customer_first_name
+        description: First name of the customer
+      - name: customer_last_name
+        description: Last name of the customer
+      - name: transaction_seq
+        description: Sequential transaction number
+      - name: customer_sales_seq
+        description: Sequential sales number for the customer
+      - name: customer_lifetime_value
+        description: Total lifetime value for the customer
+      - name: fdos
+        description: First date of sale for the customer
+      - name: nvsr
+        description: New versus return indicator; values are 'new' or 'return'
