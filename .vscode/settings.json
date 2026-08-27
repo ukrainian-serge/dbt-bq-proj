@@ -15,7 +15,8 @@
 
     "files.associations": {
         "*.sql": "jinja-sql",
-        // "*.sql": "sql",
+        "*.yml": "jinja-yml",
+        "*.md": "jinja-md"
     },
 
     // DBT FUSION ALREADY FORMATS
