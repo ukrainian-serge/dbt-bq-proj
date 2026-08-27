@@ -150,10 +150,6 @@ def process_generated_data(cfg: Config) -> None:
     alter_tweets(data_dict['tweets'], cfg)
     alter_items(data_dict['items'], cfg)
     alter_customers(data_dict['customers'], cfg)
-
-    breakpoint()
-
-        # overwrite the csv
         
 
         
