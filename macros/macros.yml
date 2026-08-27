@@ -24,13 +24,15 @@ macros:
       - name: custom_schema_name
         type: string
         description: Optional custom schema name; ignored in dev target.
-      - name: node
-        type: object
-        description: The dbt node object.
+      # - name: node
+        # type: object
+        # description: The dbt node object.
 
-  - name: grant_select
-    description: Grants BigQuery role access to a schema.
+  - name: grant_revoke
+    description: Grants or revokes BigQuery role access to a schema.
     arguments:
+      - name: switch
+        type: boolean
       - name: schema
         type: string
         description: Schema name (default target.dataset).
