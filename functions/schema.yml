@@ -1,32 +1,31 @@
 functions:
-  - name: divide_udf       # required
-    description: My UDF that returns the result of dividing two numbers, with error handling for division by zero. # optional
+  - name: divide_udf
+    description: My UDF that returns the result of dividing two numbers, with error handling for division by zero.
     config:
-      schema: shared_udfs     # this should be different than my schema. this ought to be a shared schema
+      schema: shared_udfs
       database: dbt-dev-503215
-      # volatility: deterministic # this option is not available for bigquery
-    arguments:                  # optional
-      - name: numerator          # required if arguments is specified
-        data_type: FLOAT64       # required if arguments is specified
+
+    arguments:
+      - name: numerator
+        data_type: FLOAT64
         description: The number to be divided
-        # default_value: "0"        # THis does not work for BQ
-      - name: denominator          # required if arguments is specified
-        data_type: FLOAT64       # required if arguments is specified
+
+      - name: denominator
+        data_type: FLOAT64
         description: The number by which to divide
-        # default_value: "1"        # THis does not work for BQ
-    returns:                    # required
-      data_type: FLOAT64        # required
 
+    returns:
+      data_type: FLOAT64
 
-  - name: mask_name       # required
-    description: udf that masks a name by replacing all but the first character with asterisks. # optional
+  - name: mask_name
+    description: udf that masks a name by replacing all but the first character with asterisks.
     config:
-      schema: shared_udfs     # this should be different than my schema. this ought to be a shared schema
+      schema: shared_udfs
       database: dbt-dev-503215
-      # volatility: deterministic # this option is not available for bigquery
-    arguments:                  # optional
-      - name: input_name          # required if arguments is specified
-        data_type: STRING       # required if arguments is specified
+
+    arguments:
+      - name: input_name
+        data_type: STRING
         description: "The first or last name to mask."
-    returns:                    # required
-      data_type: STRING        # required
+    returns:
+      data_type: STRING
