@@ -81,7 +81,7 @@ def main(
     get_bigquery_client(cfg)
     load_data_to_bigquery(cfg)
 
-    # print(cfg)
+
 
 if __name__ == "__main__":
     app()

@@ -1,4 +1,6 @@
-{# {{
+{#  
+this is now placed in the yml schema 
+{{
     config(
         
         materialized="incremental",
@@ -23,6 +25,7 @@ with
     final as (
         select
             orders.order_id,
+            {# cast(NULL as string) as order_id, #}
             orders.customer_id,
             orders.ordered_at as order_placed_at,
             orders.order_total_amount_paid as total_amount_paid,

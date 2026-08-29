@@ -4,39 +4,61 @@ models:
   - name: fct_customer_orders
     description: Fact table containing customer order details with incremental microbatch materialization
     config:
-      materialized: incremental
-      incremental_strategy: microbatch
-      event_time: order_placed_at
-      begin: "2026-08-04"
-      batch_size: day
+      contract:
+        enforced: true
+      materialized: table
+
+
+      # materialized: incremental
+      # incremental_strategy: microbatch
+      # event_time: order_placed_at
+      # begin: "2026-08-04"
+      # batch_size: day
+      # lookback: 2
+
       unique_key: order_id
-      lookback: 2
       partition_by:
         field: order_placed_at
         data_type: datetime
         granularity: day
+        
     columns:
+
       - name: order_id
         description: Unique identifier for each order
+        data_type: string
+        constraints:
+          - type: not_null
       - name: customer_id
         description: Foreign key reference to the customer
+        data_type: string
       - name: order_placed_at
         description: Timestamp when the order was placed; used for event time and partitioning
+        data_type: datetime
       - name: total_amount_paid
         description: Total amount paid for the order
+        data_type: float64
       - name: payment_finalized_date
         description: Date when the payment was finalized
+        data_type: datetime
       - name: customer_first_name
         description: First name of the customer
+        data_type: string
       - name: customer_last_name
         description: Last name of the customer
+        data_type: string
       - name: transaction_seq
         description: Sequential transaction number
+        data_type: int64
       - name: customer_sales_seq
         description: Sequential sales number for the customer
+        data_type: int64
       - name: customer_lifetime_value
         description: Total lifetime value for the customer
+        data_type: float64
       - name: fdos
         description: First date of sale for the customer
+        data_type: datetime
       - name: nvsr
         description: New versus return indicator; values are 'new' or 'return'
+        data_type: string

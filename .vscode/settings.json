@@ -15,9 +15,13 @@
 
     "files.associations": {
         "*.sql": "jinja-sql",
-        "*.yml": "jinja-yml",
-        "*.md": "jinja-md"
+        // "*.yml": "jinja-yml",
+        // "*.md": "jinja-md"
     },
+
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/dbt_yml_files.json": "*.yml"
+    }
 
     // DBT FUSION ALREADY FORMATS
     // "[jinja-sql]": {
