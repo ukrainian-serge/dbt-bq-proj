@@ -1,23 +1,3 @@
-{#  
-this is now placed in the yml schema 
-{{
-    config(
-        
-        materialized="incremental",
-        incremental_strategy="microbatch",
-        event_time="order_placed_at",
-        begin="2026-08-01",
-        batch_size="day",
-        unique_key="order_id",
-        lookback=2,
-
-        partition_by={
-            "field": "order_placed_at",
-            "data_type": "datetime",
-            "granularity": "day",
-        },
-    )
-}} #}
 
 with
     int_customer_orders as (select * from {{ ref("int_customer_orders") }}),
