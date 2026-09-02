@@ -1,48 +1,46 @@
 #!/bin/bash
 
-# Default values
-GOOGLE_CREDENTIALS_FILE="$GOOGLE_PROD_CREDENTIALS"
-CAUSE="from local CLI ($USER on $HOSTNAME)"
-
-# ALL dbt cloud credentials are sourced from .envrc actication by direnv
-
-# Print usage instructions
 usage() {
   cat << EOF
-Usage: $(basename "$0") [OPTIONS]
+dbt-trigger - Trigger a dbt Cloud job run via API from your local CLI.
 
-Description:
-  Triggers a dbt Cloud job run via API v2.
+USAGE:
+  dbt-trigger [OPTIONS]
 
-Options:
-  -c, --credentials PATH    Path to credentials file (default: $GOOGLE_CREDENTIALS_FILE)
-  -m, --message STR         Trigger cause message (default: 'from local CLI ($USER on $HOSTNAME)')
-  -h, --help                Show this help message and exit
+OPTIONS:
+  -s, --steps <command>     Override job steps with a custom dbt command.
+                            Defaults to: "dbt build --full-refresh"
 
-Environment Variables:
-  The credentials file (or active shell environment) must supply:
-    DBT_CLOUD_ACCOUNT_ID    Your dbt Cloud account ID
-    DBT_CLOUD_JOB_ID        Target job ID to run
-    DBT_CLOUD_API_TOKEN     Service token or Personal Access Token
-    DBT_CLOUD_HOST          dbt Cloud host (optional, default: cloud.getdbt.com)
+  -m, --message <text>      Custom cause description attached to the run log.
+                            Defaults to: "from local CLI ($USER on $HOSTNAME)"
 
-Examples:
-  $(basename "$0")
-  $(basename "$0") -m "Triggered after dbt build in staging"
-  $(basename "$0") -c $HOME/keys/dbt_cloud_credentials
+  -h, --help                Show this help documentation.
+
+EXAMPLES:
+  # Trigger job with default step ("dbt build --full-refresh")
+  dbt-trigger
+
+  # Run a specific model and its downstream dependents
+  dbt-trigger -s "dbt build --select int_customer_orders+"
+
+  # Run with custom message log in dbt Cloud UI
+  dbt-trigger -m "Manual trigger before prod deploy" -s "dbt test"
 EOF
   exit 0
 }
 
+CAUSE="from local CLI ($USER on $HOSTNAME)"
+STEPS_OVERRIDE='["dbt build --full-refresh"]'
+
 # Parse named arguments
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -c|--credentials)
-      GOOGLE_CREDENTIALS_FILE="$2"
-      shift 2
-      ;;
     -m|--message)
       CAUSE="$2"
+      shift 2
+      ;;
+    -s|--steps)
+      STEPS_OVERRIDE="[\"$2\"]"
       shift 2
       ;;
     -h|--help)
@@ -50,28 +48,20 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       echo "❌ Unknown option: $1"
-      echo "Use '$(basename "$0") -h' for usage information."
       exit 1
       ;;
   esac
 done
 
-# Load credentials
-if [ -f "$GOOGLE_CREDENTIALS_FILE" ]; then
-  source "$GOOGLE_CREDENTIALS_FILE"
-else
-  echo "❌ Error: Credentials file not found at $GOOGLE_CREDENTIALS_FILE"
-  echo "Use '$(basename "$0") -h' for usage information."
-  exit 1
-fi
-
-echo "🚀 Triggering Job ${DBT_CLOUD_JOB_ID} in Account ${DBT_CLOUD_ACCOUNT_ID}..."
+# Build payload with steps_override always populated
+PAYLOAD=$(jq -n --arg cause "$CAUSE" --argjson steps "$STEPS_OVERRIDE" \
+  '{cause: $cause, steps_override: $steps}')
 
 # Make the API Call
 RESPONSE=$(curl -s -X POST "https://${DBT_CLOUD_HOST}/api/v2/accounts/${DBT_CLOUD_ACCOUNT_ID}/jobs/${DBT_CLOUD_JOB_ID}/run/" \
   -H "Authorization: Token ${DBT_CLOUD_API_TOKEN}" \
   -H "Content-Type: application/json" \
-  -d "{\"cause\": \"${CAUSE}\"}")
+  -d "$PAYLOAD")
 
 # Check for success using the actual JSON structure
 if echo "$RESPONSE" | grep -q '"is_success":true'; then
