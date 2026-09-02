@@ -1,0 +1,29 @@
+
+with
+    int_customer_orders as (select * from {{ ref("int_customer_orders") }}),
+    customer_name_mapper as (select * from {{ ref("stg_jaffle_shop__customers") }}),
+    final as (
+        select
+            orders.order_id,
+            orders.customer_id,
+            orders.ordered_at as order_placed_at,
+            orders.order_total_amount_paid as total_amount_paid,
+            cast(orders.order_finalized_date as date) as payment_finalized_date,
+            customer_mapper.first_name as customer_first_name,
+            customer_mapper.last_name as customer_last_name,
+
+            orders.customer_sales_seq,
+            orders.customer_lifetime_value,
+            cast(orders.customer_first_order_date as date) as fdos,
+            case
+                when orders.ordered_at = orders.customer_first_order_date
+                then 'new'
+                else 'return'
+            end as nvsr
+        from int_customer_orders as orders
+        left join
+            customer_name_mapper as customer_mapper
+            on orders.customer_id = customer_mapper.customer_id
+    )
+select *
+from final

@@ -6,8 +6,8 @@ models:
     config:
       contract:
         enforced: true
-      materialized: table
 
+      # materialized: table
 
       # materialized: incremental
       # incremental_strategy: microbatch
@@ -21,7 +21,8 @@ models:
         field: order_placed_at
         data_type: datetime
         granularity: day
-        
+
+    # latest_version: 1
     columns:
 
       - name: order_id
@@ -62,3 +63,22 @@ models:
       - name: nvsr
         description: New versus return indicator; values are 'new' or 'return'
         data_type: string
+
+    versions:
+      - v: 1
+        config:
+          alias: fct_customer_orders_v1
+      - v: 2
+        config:
+          alias: fct_customer_orders_v2
+        columns: 
+          - name: fdos
+            data_type: date
+          - name: payment_finalized_date
+            data_type: date
+          - include: all
+            exclude: [transaction_seq]
+
+
+
+
