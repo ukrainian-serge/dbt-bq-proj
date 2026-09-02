@@ -10,19 +10,10 @@ models:
   - name: fct_customer_orders
     description: Fact table containing customer order details with incremental microbatch materialization
     config:
+    
       access: public
       group: product
-      contract:
-        enforced: true
 
-      # materialized: table
-
-      # materialized: incremental
-      # incremental_strategy: microbatch
-      # event_time: order_placed_at
-      # begin: "2026-08-04"
-      # batch_size: day
-      # lookback: 2
 
       unique_key: order_id
       partition_by:
@@ -76,9 +67,13 @@ models:
       - v: 1
         config:
           alias: fct_customer_orders_v1
+          contract:
+            enforced: true
       - v: 2
         config:
           alias: fct_customer_orders_v2
+          contract:
+            enforced: true
         columns: 
           - name: fdos
             data_type: date
