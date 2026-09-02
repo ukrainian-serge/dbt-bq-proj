@@ -72,11 +72,10 @@ models:
         config:
           alias: fct_customer_orders_v2
         columns:
-          # Exclude ALL modified/removed columns from inheritance
           - include: all
+          # exclude ALL modified/removed columns from inheritance. re-declare the modified columns explicitly.
+          # IF NOT DONE, FAILES IN PROD!!! 
             exclude: [transaction_seq, fdos, payment_finalized_date]
-
-          # Re-declare the modified columns explicitly
           - name: fdos
             data_type: date
           - name: payment_finalized_date
