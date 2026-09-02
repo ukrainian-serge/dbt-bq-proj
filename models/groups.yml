@@ -1,0 +1,12 @@
+groups:
+  - name: finance
+    owner:
+      name: Firstname Lastname
+      email: finance@shop.com
+      slack: finance-data
+  - name: product
+    owner:
+      name: Firstname Lastname
+      email: product@shop.com
+      slack: product-data
+      

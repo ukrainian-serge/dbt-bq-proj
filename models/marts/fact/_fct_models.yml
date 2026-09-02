@@ -1,9 +1,17 @@
 version: 2
 
 models:
+  - name: fct_test
+    description: Testing end point
+    config:
+      group: product
+
+
   - name: fct_customer_orders
     description: Fact table containing customer order details with incremental microbatch materialization
     config:
+      access: public
+      group: product
       contract:
         enforced: true
 
