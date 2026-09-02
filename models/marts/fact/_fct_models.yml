@@ -72,12 +72,13 @@ models:
         config:
           alias: fct_customer_orders_v2
         columns: 
+          - include: all
+            exclude: [transaction_seq]
           - name: fdos
             data_type: date
           - name: payment_finalized_date
             data_type: date
-          - include: all
-            exclude: [transaction_seq]
+
 
 
 
