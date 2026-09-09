@@ -17,6 +17,8 @@ models:
         description: Customer's last name
         data_type: string
 
+
+
   - name: stg_jaffle_shop__orders
     description: Staging layer for Jaffle Shop orders data
     config:
