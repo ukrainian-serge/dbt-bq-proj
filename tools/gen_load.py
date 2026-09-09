@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-
-
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Literal
@@ -80,8 +78,6 @@ def main(
     process_generated_data(cfg)
     get_bigquery_client(cfg)
     load_data_to_bigquery(cfg)
-
-
 
 if __name__ == "__main__":
     app()
