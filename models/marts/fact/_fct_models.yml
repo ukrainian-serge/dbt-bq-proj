@@ -66,8 +66,25 @@ models:
       - v: 1
         config:
           alias: fct_customer_orders_v1
+        description: Version 1 of fact table with cardinality tests against legacy model
+        tests:
+          - dbt_utils.cardinality_equality:
+              arguments:
+                to: ref('fct_customer_orders_legacy')
         columns:
           - include: all
+          - name: nvsr
+            tests:
+              - dbt_utils.cardinality_equality:
+                  arguments:
+                    to: ref('fct_customer_orders_legacy')
+                    field: nvsr
+          - name: transaction_seq
+            tests:
+              - dbt_utils.cardinality_equality:
+                  arguments:
+                    to: ref('fct_customer_orders_legacy')
+                    field: transaction_seq
       - v: 2
         config:
           alias: fct_customer_orders_v2

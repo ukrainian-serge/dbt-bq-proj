@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: fct_customer_orders_legacy
+    description: >
+      Legacy fact table for customer orders. Maintained for backward compatibility.
+
+    columns:
+      - name: order_id
+        data_type: string
+        description: "Unique identifier for each order"
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        data_type: string
+        description: "Customer identifier"
+        data_tests:
+          - not_null
+
+      - name: order_placed_at
+        data_type: datetime
+        description: "Timestamp when the order was placed"
+        data_tests:
+          - not_null
+
+      - name: total_amount_paid
+        data_type: float64
+        description: "Total monetary amount paid for the order"
+        data_tests:
+          - not_null
+      - name: payment_finalized_date
+        data_type: datetime
+        description: "Date when payment was finalized"
+        data_tests:
+          - not_null
+
+      - name: customer_first_name
+        data_type: string
+        description: "Customer's first name"
+      - name: customer_last_name
+        data_type: string
+        description: "Customer's last name"
+      - name: transaction_seq
+        data_type: int64
+        description: "Global transaction sequence number"
+        data_tests:
+          - not_null
+
+      - name: customer_sales_seq
+        data_type: int64
+        description: "Customer-level transaction sequence number"
+        data_tests:
+          - not_null
+
+      - name: nvsr
+        data_type: string
+        description: "New vs. Return indicator (new/return)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['new', 'return']
+
+      - name: customer_lifetime_value
+        data_type: float64
+        description: "Cumulative customer spending as of this order"
+        data_tests:
+          - not_null
+      - name: fdos
+        data_type: datetime
+        description: "First date of sale (customer's first order date)"
+        data_tests:
+          - not_null

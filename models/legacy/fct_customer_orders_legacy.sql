@@ -1,5 +1,11 @@
--- CREATE OR REPLACE TABLE `dbt-prod-503215.jaffle_shop.fct_customer_orders_legacy` AS
-CREATE OR REPLACE TABLE `dbt-dev-503215.dbt_skamilchu.fct_customer_orders_legacy` AS
+{{
+  config(
+    materialized = 'table',
+    full_refresh=true
+    )
+}}
+
+{# CREATE OR REPLACE TABLE `dbt-dev-503215.dbt_skamilchu.fct_customer_orders_legacy` AS #}
 
 WITH paid_orders as (
 
@@ -41,9 +47,6 @@ select
     CASE WHEN c.first_order_date = p.order_placed_at
     THEN 'new'
     ELSE 'return' END as nvsr,
-
-    -- x.customer_lifetime_value,
-
     SUM(p.total_amount_paid) OVER (
         PARTITION BY p.customer_id 
         ORDER BY p.order_placed_at 
@@ -54,14 +57,4 @@ select
     FROM paid_orders p
     left join customer_orders as c 
         USING (customer_id)
-    -- LEFT JOIN 
-    -- (
-    --     select
-    --         p.customer_id,
-    --         sum(total_amount_paid) as customer_lifetime_value
-    --     from paid_orders p
-    --     group by 1
-    -- ) x on x.customer_id = p.customer_id
     ORDER BY order_id
-
-;
