@@ -3,10 +3,13 @@ groups:
     owner:
       name: Firstname Lastname
       email: finance@shop.com
-      slack: finance-data
+    config:
+      meta:
+        slack: finance-data
   - name: product
     owner:
       name: Firstname Lastname
       email: product@shop.com
-      slack: product-data
-      
+    config:
+      meta:
+        slack: product-data

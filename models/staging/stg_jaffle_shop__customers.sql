@@ -24,7 +24,7 @@ FINAL AS (
         SPLIT(
             first_and_last_name,
             ' '
-        ) [SAFE_OFFSET(1)] AS last_name,
+        ) [SAFE_OFFSET(1)] AS last_name
     FROM
         trimmed
 )
