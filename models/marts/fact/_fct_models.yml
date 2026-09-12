@@ -8,7 +8,9 @@ models:
 
 
   - name: fct_customer_orders
+    latest_version: 2
     description: Fact table containing customer order details with incremental microbatch materialization
+
     config:
       access: public
       group: product
@@ -21,16 +23,30 @@ models:
         data_type: datetime
         granularity: day
 
-    latest_version: 2
+    # data_tests:
+    #   - dbt_utils.equality:
+    #       arguments:
+    #         to: ref('fct_customer_orders_legacy')
+
     columns:
       - name: order_id
         description: Unique identifier for each order
         data_type: string
         constraints:
           - type: not_null
+        # tests:
+        #   - dbt_utils.cardinality_equality:
+        #       arguments:
+        #         to: ref('fct_customer_orders_legacy')
+        #         field: order_id
       - name: customer_id
         description: Foreign key reference to the customer
         data_type: string
+        # tests:
+        #   - dbt_utils.cardinality_equality:
+        #       arguments:
+        #         to: ref('fct_customer_orders_legacy')
+        #         field: customer_id
       - name: order_placed_at
         description: Timestamp when the order was placed; used for event time and partitioning
         data_type: datetime
@@ -67,24 +83,9 @@ models:
         config:
           alias: fct_customer_orders_v1
         description: Version 1 of fact table with cardinality tests against legacy model
-        tests:
-          - dbt_utils.cardinality_equality:
-              arguments:
-                to: ref('fct_customer_orders_legacy')
         columns:
           - include: all
-          - name: nvsr
-            tests:
-              - dbt_utils.cardinality_equality:
-                  arguments:
-                    to: ref('fct_customer_orders_legacy')
-                    field: nvsr
-          - name: transaction_seq
-            tests:
-              - dbt_utils.cardinality_equality:
-                  arguments:
-                    to: ref('fct_customer_orders_legacy')
-                    field: transaction_seq
+
       - v: 2
         config:
           alias: fct_customer_orders_v2

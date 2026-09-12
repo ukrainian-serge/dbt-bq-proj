@@ -14,7 +14,7 @@
 
 with
     orders as (select * from {{ ref("stg_jaffle_shop__orders") }}),
-    joined as (
+        joined as (
         select
             a.order_id,
             a.customer_id,
@@ -40,7 +40,7 @@ with
                 partition by a.customer_id
             ) as customer_first_order_date
         from orders as a
-        {# where order_total > 0 #}
+        where order_total > 0
     ),
     final as (
         select

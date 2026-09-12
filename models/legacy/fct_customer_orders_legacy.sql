@@ -5,7 +5,6 @@
     )
 }}
 
-{# CREATE OR REPLACE TABLE `dbt-dev-503215.dbt_skamilchu.fct_customer_orders_legacy` AS #}
 
 WITH paid_orders as (
 
