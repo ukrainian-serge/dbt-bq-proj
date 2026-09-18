@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: fct_test
-    description: Testing end point
-    config:
-      group: product
+  # - name: fct_test
+  #   description: Testing end point
+  #   config:
+  #     group: product
 
 
   - name: fct_customer_orders
@@ -71,6 +71,7 @@ models:
       - name: customer_lifetime_value
         description: Total lifetime value for the customer
         data_type: float64
+
       - name: fdos
         description: First date of sale for the customer
         data_type: datetime

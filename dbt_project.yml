@@ -10,7 +10,7 @@ profile: 'jaffle_shop'
 # found in the "models/" directory. You probably won't need to change these!
 model-paths: ["models"]
 analysis-paths: ["analyses"]
-test-paths: ["tests"]
+test-paths: ["data-tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
@@ -42,7 +42,6 @@ seeds:
 
 analyses:
   +enabled: false
-
 
 flags:
   require_generic_test_arguments_property: true

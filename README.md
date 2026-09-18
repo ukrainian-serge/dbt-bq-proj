@@ -1,4 +1,4 @@
-# dbt Fundamentals Project
+# dbt Project
 
 This project builds a Jaffle Shop-style analytics stack with dbt Fusion, BigQuery, and a lightweight local developer workflow. The model layer covers staging, intermediate logic, and marts, while the surrounding setup supports raw-data generation, service-account authentication, and dbt Cloud-triggered production runs.
 
@@ -31,8 +31,6 @@ The environment follows a standard Google Cloud setup:
 - create separate datasets for raw ingestion and transformed analytics data
 - configure IAM permissions at the project and dataset level
 
-
-
 ## Local environment management with direnv
 
 Local environment variables are managed with `direnv` so credentials and project settings stay out of the repo and remain easy to switch per environment.
@@ -57,18 +55,51 @@ The stack includes dbt Cloud, which serves as the orchestration layer for produc
 This script is useful when a developer wants to start a dbt Cloud job without manually opening the UI, making it easy to move from local validation to cloud execution in a repeatable way.
 
 ## Project structure
-### dbt DEV environment
-- [models/](models/) — dbt staging, intermediate, and mart models
-- [seeds/](seeds/) — seed files and reference datasets
+
+### dbt models
+Located in [models/](models/) and organized by layer:
+
+**Staging** (`staging/`)
+- Raw data layer that sources from the Jaffle Shop source tables and creates clean, normalized views:
+  - `stg_jaffle_shop__customers` — Customers staging view with unique/not_null tests on customer_id
+  - `stg_jaffle_shop__orders` — Orders staging view with referential integrity to customers
+  - `stg_jaffle_shop__items` — Order items staging view
+  - `stg_jaffle_shop__products` — Products staging view
+  - `stg_jaffle_shop__stores` — Stores staging view
+  - `stg_jaffle_shop__supplies` — Supplies staging view
+  - `stg_jaffle_shop__tweets` — Tweets staging view
+
+**Intermediate** (`marts/intermediate/`)
+- Business logic and joins combining staging data with aggregations:
+  - `int_customer_orders` — Enriched orders with customer-level aggregations (contract enforced), includes transaction sequencing and lifetime value calculations
+  - `int_store_products` — Store-product relationships
+
+**Marts** (`marts/fact/`)
+- Fact tables for analytics:
+  - `fct_customer_orders` — Primary fact table with **two versions** (v1 and v2) using incremental microbatch materialization, partitioned by order date, with contract enforcement and public access. v2 refines datetime columns (fdos, payment_finalized_date) to date types.
+  - `fct_test` — Testing endpoint (assigned to product group)
+
+**Legacy** (`legacy/`)
+- Backward-compatible models maintained for historical reference:
+  - `fct_customer_orders_legacy` — Previous fact table implementation with comprehensive data tests (unique/not_null constraints, accepted values for nvsr)
+
+**Python Models** (`python_demo/`)
+- Experimental Python-based models (**disabled by default** in dbt_project.yml; they require 20+ minutes startup time):
+  - `dates_spine` — Date spine helper table (SQL-based)
+  - `is_holiday` — Python model for holiday detection using pandas and holidays packages
+
+### Additional dbt directories
+- [seeds/](seeds/) — seed files and reference datasets (disabled by default)
 - [snapshots/](snapshots/) — snapshot definitions
-- [analyses/](analyses/) — ad hoc SQL checks and validation queries
-- [macros/](macros/) — reusable dbt macros
+- [analyses/](analyses/) — ad hoc SQL checks and validation queries (disabled by default)
+- [macros/](macros/) — reusable dbt macros (e.g., `clean_zero_row_models`)
 - [functions/](functions/) — SQL and UDF helper objects
-- [tests/](tests/) — SQL-based dbt tests
-### pre-dbt DEV and dbt PROD
+- [tests/](tests/) — SQL-based dbt tests with dbt_utils for cardinality and equality validations
+
+### Development and tooling
 - [tools/](tools/):
-   - (pre-dbt DEV)`gen_load.py`: raw data generation, loading.
-   - (dbt PROD)`dbt-trigger`: dbt Cloud production job API call.
+   - (pre-dbt DEV) `gen_load.py`: raw data generation and BigQuery loading
+   - (dbt PROD) `dbt-trigger`: dbt Cloud production job API trigger
 
 ## Quick start
 
@@ -82,7 +113,6 @@ This script is useful when a developer wants to start a dbt Cloud job without ma
 6. dbt models building:
    `dbt debug`
    `dbt build`
-
 
 ## Related documentation
 
