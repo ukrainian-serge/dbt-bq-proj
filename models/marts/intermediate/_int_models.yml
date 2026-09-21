@@ -17,10 +17,12 @@ models:
         data_type: string
         description: ""
         # data_tests:
-        #   - dbt_utils.cardinality_equality:
-        #       arguments:
-        #         to: ref('stg_jaffle_shop__orders')
-        #         field: customer_id
+        #   - unique
+        data_tests:
+          - dbt_utils.cardinality_equality:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: customer_id
           
 
       - name: ordered_at

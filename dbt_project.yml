@@ -25,6 +25,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   jaffle_shop:
+    +persist_docs:
+      relation: true   # Copies model descriptions to table/view comments
+      columns: true    # Copies column descriptions to physical column comments
     staging:
       +materialized: view
       +static_analysis: strict
@@ -41,7 +44,7 @@ seeds:
   +enabled: false
 
 analyses:
-  +enabled: false
+  +enabled: true
 
 flags:
   require_generic_test_arguments_property: true

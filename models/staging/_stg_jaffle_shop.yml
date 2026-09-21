@@ -130,7 +130,7 @@ models:
           - not_null
           - unique
         description: Unique store identifier. Primary key for this source. 
-      - name: name
+      - name: store_name
         data_type: string
         description: Name of store
       - name: opened_at

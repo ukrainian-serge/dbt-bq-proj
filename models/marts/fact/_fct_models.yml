@@ -1,12 +1,6 @@
 version: 2
 
 models:
-  # - name: fct_test
-  #   description: Testing end point
-  #   config:
-  #     group: product
-
-
   - name: fct_customer_orders
     latest_version: 2
     description: Fact table containing customer order details with incremental microbatch materialization
@@ -34,19 +28,23 @@ models:
         data_type: string
         constraints:
           - type: not_null
+          
         # tests:
         #   - dbt_utils.cardinality_equality:
         #       arguments:
         #         to: ref('fct_customer_orders_legacy')
         #         field: order_id
+
       - name: customer_id
         description: Foreign key reference to the customer
         data_type: string
+
         # tests:
         #   - dbt_utils.cardinality_equality:
         #       arguments:
         #         to: ref('fct_customer_orders_legacy')
         #         field: customer_id
+
       - name: order_placed_at
         description: Timestamp when the order was placed; used for event time and partitioning
         data_type: datetime
