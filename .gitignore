@@ -3,9 +3,9 @@
 .envrc
 profiles.yml
 
-
 #Testing
 *models/test_code.sql
+scratch.json
 
 # VS Code
 # .vscode/ ### including this now. lots of good setups in here
