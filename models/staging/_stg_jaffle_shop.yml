@@ -3,6 +3,7 @@ models:
     description: Staging layer for Jaffle Shop customers data
     config:
       materialized: view
+      contract: {enforced: true}
     columns:
       - name: customer_id
         description: Unique identifier for the customer. Primary key.
@@ -16,7 +17,6 @@ models:
       - name: last_name
         description: Customer's last name
         data_type: string
-
 
 
   - name: stg_jaffle_shop__orders

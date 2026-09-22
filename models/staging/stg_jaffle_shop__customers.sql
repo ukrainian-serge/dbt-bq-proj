@@ -10,7 +10,7 @@ WITH source AS (
 trimmed AS (
     SELECT
         id AS customer_id,
-        TRIM(NAME) AS first_and_last_name
+        TRIM(name) AS first_and_last_name
     FROM
         source
 ),

@@ -40,7 +40,7 @@ with
                 partition by a.customer_id
             ) as customer_first_order_date
         from orders as a
-        where order_total > 0
+        {# where order_total > 0 #}
     ),
     final as (
         select
