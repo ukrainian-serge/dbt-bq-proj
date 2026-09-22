@@ -2,43 +2,43 @@ name: 'jaffle_shop'
 version: '1.0.0'
 config-version: 2
 
-# This setting configures which "profile" dbt uses for this project.
-profile: 'jaffle_shop'
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
 
-# These configurations specify where dbt should look for different types of files.
-# The `source-paths` config, for example, states that models in this project can be
-# found in the "models/" directory. You probably won't need to change these!
+profile: 'jaffle_shop'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["data-tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-clean-targets:         # directories to be removed by `dbt clean`
+clean-targets:    # directories to be removed by `dbt clean`
   - "target"
   - "dbt_modules"
-
-
-# Configuring models
-# Full documentation: https://docs.getdbt.com/docs/configuring-models
-
 
 models:
   jaffle_shop:
     +persist_docs:
-      relation: true   # Copies model descriptions to table/view comments
-      columns: true    # Copies column descriptions to physical column comments
+      relation: true
+      columns: true
+
     staging:
       +materialized: view
       +static_analysis: strict
+      +labels:
+        layer: staging
+        managed_by: dbt_dev
 
     marts:
       +enabled: true
       +materialized: table
       +static_analysis: strict
+      +labels:
+        layer: marts
+        managed_by: dbt_dev
 
-    python_demo:
-      +enabled: false     ##### takes over 20 minutes of startup time to run, so we disable it by default
+    python_demo:    # takes over 20 minutes of startup time to run so we disable it by default
+      +enabled: false
 
 seeds:
   +enabled: false

@@ -23,6 +23,7 @@ models:
     description: Staging layer for Jaffle Shop orders data
     config:
       materialized: view
+
     columns:
       - name: order_id
         description: Unique identifier for the order. Primary key.
@@ -30,6 +31,7 @@ models:
         data_tests:
           - unique
           - not_null
+
       - name: customer_id
         description: Customer identifier.
         data_type: string

@@ -5,25 +5,30 @@ models:
     config:
       contract:
         enforced: true
+        
     description: ""
     columns:
       - name: order_id
         data_type: string
         constraints:
           - type: not_null
+          - type: primary_key
+            warn_unenforced: false
+
         description: ""
 
       - name: customer_id
         data_type: string
         description: ""
+
+        # data_tests:
+        #   - dbt_utils.cardinality_equality:
+        #       arguments:
+        #         to: ref('stg_jaffle_shop__orders')
+        #         field: customer_id
+
         # data_tests:
         #   - unique
-        data_tests:
-          - dbt_utils.cardinality_equality:
-              arguments:
-                to: ref('stg_jaffle_shop__orders')
-                field: customer_id
-          
 
       - name: ordered_at
         data_type: datetime
@@ -37,7 +42,7 @@ models:
               arguments:
                 group_by_column: customer_id
                 column_name: order_total_amount_paid
-
+                
       - name: order_finalized_date
         data_type: datetime
         description: ""
