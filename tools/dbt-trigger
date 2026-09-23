@@ -30,7 +30,10 @@ EOF
 }
 
 CAUSE="from local CLI ($USER on $HOSTNAME)"
-STEPS_OVERRIDE='["dbt build --full-refresh"]'
+STEPS_OVERRIDE='[
+  "dbt build --full-refresh",
+  "dbt docs generate"
+  ]'
 
 # Parse named arguments
 while [[ $# -gt 0 ]]; do
