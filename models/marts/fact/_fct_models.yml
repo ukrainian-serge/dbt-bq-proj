@@ -94,10 +94,11 @@ models:
           # IF NOT DONE, FAILES IN PROD!!! 
             exclude: [transaction_seq, fdos, payment_finalized_date]
           - name: fdos
+            description: First date of sale for the customer
             data_type: date
           - name: payment_finalized_date
+            description: Date when the payment was finalized
             data_type: date
-
 
 
 
