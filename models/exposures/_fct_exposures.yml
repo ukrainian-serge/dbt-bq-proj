@@ -1,0 +1,15 @@
+exposures:
+  - name: fct_customer_orders_metrics
+    label: Fact Order Metrics
+    owner:  
+      name: Serge
+      email: sergekamilchu@gmail.com
+
+    type: dashboard
+    depends_on:
+      - ref('fct_customer_orders')
+      - metric('total_amount_paid')
+    maturity: high
+    url: https://colab.research.google.com/drive/1IkNIFVr8dXhCz_pjfqXUFgqGiDIF2Loe#scrollTo=5534959a
+
+      
