@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# 1. Define defaults at the top of the script first
+CAUSE="from local CLI ($USER on $HOSTNAME)"
+STEPS_OVERRIDE='[
+  "dbt build --full-refresh",
+  "dbt docs generate"
+]'
+
+# Format the JSON array into a single-line string for clean help display
+DEFAULT_STEPS_DISPLAY=$(echo "$STEPS_OVERRIDE" | jq -c '.' 2>/dev/null || echo "[\"dbt build --full-refresh\", \"dbt docs generate\"]")
+
+# 2. Define the usage function using the formatted default variable
 usage() {
   cat << EOF
 dbt-trigger - Trigger a dbt Cloud job run via API from your local CLI.
@@ -9,15 +20,15 @@ USAGE:
 
 OPTIONS:
   -s, --steps <command>     Override job steps with a custom dbt command.
-                            Defaults to: "dbt build --full-refresh"
+                            Defaults to: ${DEFAULT_STEPS_DISPLAY}
 
   -m, --message <text>      Custom cause description attached to the run log.
-                            Defaults to: "from local CLI ($USER on $HOSTNAME)"
+                            Defaults to: "${CAUSE}"
 
   -h, --help                Show this help documentation.
 
 EXAMPLES:
-  # Trigger job with default step ("dbt build --full-refresh")
+  # Trigger job with default steps
   dbt-trigger
 
   # Run a specific model and its downstream dependents
@@ -28,12 +39,6 @@ EXAMPLES:
 EOF
   exit 0
 }
-
-CAUSE="from local CLI ($USER on $HOSTNAME)"
-STEPS_OVERRIDE='[
-  "dbt build --full-refresh",
-  "dbt docs generate"
-  ]'
 
 # Parse named arguments
 while [[ $# -gt 0 ]]; do
