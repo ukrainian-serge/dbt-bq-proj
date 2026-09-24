@@ -1,0 +1,38 @@
+unit_tests:
+  - name: test_is_valid_pivot
+    model: int_store_products
+
+    overrides:
+      macros:
+        dbt_utils.get_column_values: ['product_test-dummy1', 'product-test_dummy2', 'product_test dummy3']
+
+    given:
+      - input: ref('stg_jaffle_shop__stores')
+        rows:
+          - { store_id: 1, store_name: 'Downtown' }
+          - { store_id: 2, store_name: 'Uptown' }
+
+      - input: ref('stg_jaffle_shop__orders')
+        rows:
+          - { order_id: 100, store_id: 1, order_total: 10.50 } # Downtown - Dummy 1
+          - { order_id: 200, store_id: 1, order_total: 20.25 } # Downtown - Dummy 2
+          - { order_id: 300, store_id: 2, order_total: 50.00 } # Uptown
+      
+      - input: ref('stg_jaffle_shop__products')
+        rows:
+          - { sku: 'SKU1', product_name: 'product_test-dummy1', product_type: 'Widget', description: 'Desc 1' }
+          - { sku: 'SKU2', product_name: 'product-test_dummy2', product_type: 'Gadget', description: 'Desc 2' }
+          - { sku: 'SKU3', product_name: 'product_test dummy3', product_type: 'Tool',   description: 'Desc 3' }
+
+      - input: ref('stg_jaffle_shop__items')
+        rows:
+          - { order_id: 100, sku: 'SKU1' }
+          - { order_id: 200, sku: 'SKU2' }
+          - { order_id: 300, sku: 'SKU3' }
+
+
+    expect:
+      rows:
+        - { store_name: 'Downtown', product_test_dummy1: 10.50, product_test_dummy2: 20.25, product_test_dummy3: 0.00,  total: 31 }
+        - { store_name: 'Uptown',   product_test_dummy1: 0.00,  product_test_dummy2: 0.00,  product_test_dummy3: 50.00, total: 50 }
+        - { store_name: 'TOTAL',    product_test_dummy1: 10.50, product_test_dummy2: 20.25, product_test_dummy3: 50.00, total: 81 }

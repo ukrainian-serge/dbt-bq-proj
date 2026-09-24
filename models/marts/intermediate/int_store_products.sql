@@ -2,7 +2,7 @@
 {% set product_names = dbt_utils.get_column_values(
     table=ref('stg_jaffle_shop__products'),
     column='product_name',
-    default=['product_test_dummy1', 'product_test_dummy2', 'product_test_dummy3']
+    default=['product_test-dummy1', 'product-test_dummy2', 'product_test dummy3']
 ) %}
 
 
