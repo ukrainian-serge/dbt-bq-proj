@@ -9,6 +9,11 @@ with
             store_id,
             -- Timestamps
             cast(ordered_at as datetime) as ordered_at,
+            date_diff(
+                cast({{ dbt.current_timestamp() }} as datetime),
+                cast(ordered_at as datetime),
+                day
+                ) as days_since_order,
             -- Monetary amounts (cast to int, then convert cents -> dollars)
             safe_divide(cast(subtotal as int64), 100) as subtotal,
             safe_divide(cast(tax_paid as int64), 100) as tax_paid,

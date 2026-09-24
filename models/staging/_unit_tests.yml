@@ -1,0 +1,33 @@
+unit_tests:
+  - name: test_is_valid_first_last_name_split
+    model: stg_jaffle_shop__customers
+
+    given:
+      - input:  source('jaffle_shop', 'customers')
+        rows:
+          - { id: 1, name: 'Serge ' }
+          - { id: 2, name: ' Serge Kamilchu' }
+          - { id: 3, name: 'Serge M. Kamilchu' }
+          - { id: 4, name: 'Serge Michael De Kamilchu' }
+    expect: 
+      rows:
+        - { customer_id: 1, first_name: 'Serge', middle_name: null, last_name: null }
+        - { customer_id: 2, first_name: 'Serge', middle_name: null, last_name: 'Kamilchu' }
+        - { customer_id: 3, first_name: 'Serge', middle_name: 'M',    last_name: 'Kamilchu' }
+        - { customer_id: 4, first_name: 'Serge', middle_name: 'Michael', last_name: 'De Kamilchu' }
+
+  - name: test_valid_order_date_diff
+    model: stg_jaffle_shop__orders
+    overrides:
+      macros:
+        dbt.current_timestamp: "cast('2026-01-10' as timestamp)" # moch current_date
+    given:
+      - input:  source('jaffle_shop', 'orders')
+        rows:
+          - { id: 1, ordered_at: '2026-01-01' }
+          - { id: 2, ordered_at: '2026-01-10' }
+    expect: 
+      rows:
+          - { order_id: 1, days_since_order: 9 }
+          - { order_id: 2, days_since_order: 0 }
+
