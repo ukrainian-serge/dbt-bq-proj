@@ -41,7 +41,7 @@ models:
       +enabled: false
 
 seeds:
-  +enabled: false
+  +enabled: true
 
 analyses:
   +enabled: true
