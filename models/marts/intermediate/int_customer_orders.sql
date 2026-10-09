@@ -1,4 +1,4 @@
-{{
+{# {{
     config(
         materialized="table",
         event_time="ordered_at",
@@ -9,7 +9,7 @@
         },
         cluster_by=["customer_id"],
     )
-}}
+}} #}
 
 
 with
