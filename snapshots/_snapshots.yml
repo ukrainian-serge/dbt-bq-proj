@@ -16,14 +16,11 @@ snapshots:
       check_cols: ['id' ,'customer', 'store_id', 'ordered_at', 'subtotal', 'tax_paid', 'order_total']
       hard_deletes: ignore       ## ignore | invalidate | new_record
 
-
     columns:
       - name: id
         data_tests:
           - not_null
-
-
-
+          
       # updated_at: updated_at  # Only used for 'timestamp' strategy. Specify the column that indicates when a row was last update.
       # snapshot_meta_column_names:\
       #   - dbt_scd_id
