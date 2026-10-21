@@ -5,6 +5,8 @@
     ],
     
 
+    "workbench.preferredDarkColorTheme": "GitHub Dark Dimmed",
+
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     
@@ -42,6 +44,13 @@
         "https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/packages-latest.json": [
             "packages.yml"
         ]
+    },
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.parquet": "duckdb.dataFileViewer",
+        "*.csv": "duckdb.dataFileViewer",
+        "*.tsv": "duckdb.dataFileViewer",
+        "*.xlsx": "duckdb.dataFileViewer"
     }
 
 
