@@ -60,7 +60,7 @@ This script is useful when a developer wants to start a dbt Cloud job without ma
 Located in [models/](models/) and organized by layer:
 
 **Staging** (`staging/`)
-- Raw data layer that sources from the Jaffle Shop source tables and creates clean, normalized views:
+- Stage layer that sources from raw tables and creates clean, normalized views:
   - `stg_jaffle_shop__customers` — Customers staging view with unique/not_null tests on customer_id
   - `stg_jaffle_shop__orders` — Orders staging view with referential integrity to customers
   - `stg_jaffle_shop__items` — Order items staging view
@@ -98,8 +98,8 @@ Located in [models/](models/) and organized by layer:
 
 ### Development and tooling
 - [tools/](tools/):
-   - (pre-dbt DEV) `gen_load.py`: raw data generation and BigQuery loading
-   - (dbt PROD) `dbt-trigger`: dbt Cloud production job API trigger
+   - (raw) `gen_load.py`: raw data generation and BigQuery loading
+   - (prod) `dbt-trigger`: dbt Cloud production job API trigger
 
 ## Quick start
 

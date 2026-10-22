@@ -65,30 +65,17 @@ outputs:
 
 ```bash
 # .envrc
+export VIRTUAL_ENV="$PWD/env"
+PATH_add env/bin
+PATH_add tools
 
-# Dev / Default Environment (Used by dbt, Python, & VS Code mcp.json)
-export GCP_SA_DEV_CREDS="/path/to/prod-service-account.json"
-export BQ_DEV_PROJECT_ID="your-dev-proj"
-export BQ_DEV_DATASET="your-dev-dataset"
+# dotenv "$HOME/keys/dbt-cloud-credentials"
+# dotenv env
 
 # Raw/Source setup. Needed for gen_load.py
-export GCP_SA_RAW_CREDS="/path/to/raw-service-account.json" 
-export BQ_RAW_PROJECT_ID="your-raw-proj"
-export BQ_RAW_DATASET="your-raw-dataset"
-export JAFGEN_DATA_DIR="jaffle_raw_data/"
-
-# Production Environment (Optional local reference)
-export GCP_SA_PROD_CREDS="/path/to/prod-service-account.json"
-export BQ_PROD_PROJECT_ID="your-prod-proj"
-export BQ_PROD_DATASET="your-prod-dataset"
-
-
-# Agent Service Account(Keep minimal roles and permissions)
-export GCP_SA_AGENT_CREDS="/path/to/agent-service-account.json"
-
-PATH_add tools # add pathing to tools/          
-source env/bin/activate # activate python env
-source_env $HOME/keys/dbt_cloud_credentials # (Optional) Import for dbt Cloud
+export GCP_LOADER_KEY="$HOME/.config/gcp/bq-raw-loader-key.json"
+export GCP_PROJECT_ID="bq-serge"
+export BQ_DATASET_RAW="raw"
 
 # (Optional) just in case you need a .env
 # env | grep -E '^(GCP_SA_|BQ_|JAFGEN_)' > .env 

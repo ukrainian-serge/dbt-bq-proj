@@ -6,13 +6,13 @@ Generates synthetic Jaffle Shop data and loads it into BigQuery.
 
 ```bash
 # Generate and load data for a date range
-python tools/gen_load.py --generate --date-from 2026-05-15 --date-to 2026-08-12
+tools/gen_load.py --generate --date-from 2026-05-15 --date-to 2026-08-12
 
 # Load existing CSVs without generating
-python tools/gen_load.py --data-dir ./jaffle_raw_data
+tools/gen_load.py --data-dir ./jaffle_raw_data
 
 # Use existing, but map and filter by date-from and date-to
-python tools/gen_load.py --data-dir --date-from 2026-05-15 --date-to 2026-08-12
+tools/gen_load.py --date-from 2026-05-15 --date-to 2026-08-12
 
 ```
 
@@ -33,13 +33,13 @@ See [src/](src/) for module details.
 ```bash
 # cli
 # Load existing CSVs with date range filtering
-python tools/gen_load.py --date-from 2026-06-12 --date-to 2026-08-12
+tools/gen_load.py --date-from 2026-06-12 --date-to 2026-08-12
 
 # Append more data
-python tools/gen_load.py --generate --date-from 2026-08-13 --date-to 2026-08-17 --write-disposition WRITE_APPEND
+tools/gen_load.py --generate --date-from 2026-08-13 --date-to 2026-08-17 --write-disposition WRITE_APPEND
 
 # Load without date filtering
-python tools/gen_load.py
+tools/gen_load.py
 
 ```
 
