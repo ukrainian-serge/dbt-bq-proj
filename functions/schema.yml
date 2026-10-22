@@ -3,7 +3,7 @@ functions:
     description: My UDF that returns the result of dividing two numbers, with error handling for division by zero.
     config:
       schema: shared_udfs
-      database: dbt-dev-503215
+      database: bq-serge
 
     arguments:
       - name: numerator
@@ -21,7 +21,7 @@ functions:
     description: udf that masks a name by replacing all but the first character with asterisks.
     config:
       schema: shared_udfs
-      database: dbt-dev-503215
+      database: bq-serge
 
     arguments:
       - name: input_name
