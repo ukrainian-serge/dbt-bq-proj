@@ -23,7 +23,7 @@ Entry point that orchestrates data generation and loading:
 - Maps dates and filters data to specified date range
 - Loads CSVs into BigQuery tables
 
-Requires `.envrc` with: `GCP_SA_PROD_CREDS`, `BQ_RAW_PROJECT_ID`, `BQ_RAW_DATASET`, `JAFGEN_DATA_DIR`
+Requires `.envrc` VARS
 
 
 See [src/](src/) for module details.
@@ -40,20 +40,6 @@ tools/gen_load.py --generate --date-from 2026-08-13 --date-to 2026-08-17 --write
 
 # Load without date filtering
 tools/gen_load.py
-
-```
-
-The script reads values from the environment, which are set by `.envrc` via direnv.
-
-```bash
-# .envrc
-...
-GCP_SA_RAW_CREDS=/path/to/your-service-account.json
-BQ_RAW_PROJECT_ID=your-raw-project-id
-BQ_RAW_DATASET=your-raw-dataset
-JAFGEN_DATA_DIR=jaffle_raw_data/
-...
-```
 
 ## Date Range Filtering
 
