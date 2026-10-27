@@ -4,6 +4,7 @@ models:
   - name: fct_customer_orders_legacy
     description: >
       Legacy fact table for customer orders. Maintained for backward compatibility.
+      NEED CASTING TO FIX. ATT ARE STRING TYPE.
 
     columns:
       - name: order_id
