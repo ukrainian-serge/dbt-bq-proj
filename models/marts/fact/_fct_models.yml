@@ -17,34 +17,15 @@ models:
         data_type: datetime
         granularity: day
 
-    # data_tests:
-    #   - dbt_utils.equality:
-    #       arguments:
-    #         to: ref('fct_customer_orders_legacy')
-
     columns:
       - name: order_id
         description: Unique identifier for each order
         data_type: string
         constraints:
           - type: not_null
-          
-        # tests:
-        #   - dbt_utils.cardinality_equality:
-        #       arguments:
-        #         to: ref('fct_customer_orders_legacy')
-        #         field: order_id
-
       - name: customer_id
         description: Foreign key reference to the customer
         data_type: string
-
-        # tests:
-        #   - dbt_utils.cardinality_equality:
-        #       arguments:
-        #         to: ref('fct_customer_orders_legacy')
-        #         field: customer_id
-
       - name: order_placed_at
         description: Timestamp when the order was placed; used for event time and partitioning
         data_type: datetime
@@ -79,11 +60,7 @@ models:
 
     versions:
       - v: 1
-        config:
-          alias: fct_customer_orders_v1
         description: Version 1 of fact table with cardinality tests against legacy model
-        columns:
-          - include: all
 
       - v: 2
         config:
