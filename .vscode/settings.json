@@ -55,7 +55,8 @@
             "driver": "BigQuery",
             "projectId": "bq-serge"
         }
-    ]
+    ],
+    "dbt.dbtMajorVersion": "v1"
 
 
 }

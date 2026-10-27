@@ -19,6 +19,7 @@ env/
 # dbt target directory (compiled SQL and logs)
 target/
 dbt_packages/
+dbt_modules/
 dbt_internal_packages/
 
 # Logs
