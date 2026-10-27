@@ -8,6 +8,7 @@ exposures:
     type: notebook
     depends_on:
       - ref('fct_customer_orders')
+      # - ref('fct_customer_orders', v=2)   # pin for testing, then switch back to latest version(remove v=2) when ready to deploy
     maturity: high
     url: https://colab.research.google.com/drive/1IkNIFVr8dXhCz_pjfqXUFgqGiDIF2Loe#scrollTo=5534959a
 

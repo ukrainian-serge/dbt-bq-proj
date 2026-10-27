@@ -37,6 +37,14 @@ models:
         layer: marts
         managed_by: dbt_dev
 
+    legacy:
+      +enabled: true
+      +materialized: table
+      +static_analysis: strict
+      +labels:
+        layer: legacy
+        managed_by: dbt_dev
+
     python_demo:    # takes over 20 minutes of startup time to run so we disable it by default
       +enabled: false
 
@@ -48,3 +56,4 @@ analyses:
 
 flags:
   require_generic_test_arguments_property: true
+  latest_version_pointer_enabled_by_default: true

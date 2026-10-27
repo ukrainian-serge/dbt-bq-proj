@@ -20,7 +20,7 @@ unit_tests:
     model: stg_jaffle_shop__orders
     overrides:
       macros:
-        dbt.current_timestamp: "cast('2026-01-10' as timestamp)" # moch current_date
+        dbt.current_timestamp: "cast('2026-01-10' as timestamp)" # mock current_date
     given:
       - input:  source('jaffle_shop', 'orders')
         rows:

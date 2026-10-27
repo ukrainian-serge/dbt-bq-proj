@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: fct_customer_orders
-    latest_version: 2
+    latest_version: 1
     description: Fact table containing customer order details with incremental microbatch materialization
 
     config:
@@ -63,8 +63,8 @@ models:
         description: Version 1 of fact table with cardinality tests against legacy model
 
       - v: 2
-        config:
-          alias: fct_customer_orders_v2
+        # config:
+        #   alias: fct_customer_orders_v2
         columns:
           - include: all
           # exclude ALL modified/removed columns from inheritance. re-declare the modified columns explicitly.
