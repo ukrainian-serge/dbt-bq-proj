@@ -2,6 +2,9 @@ name: 'jaffle_shop'
 version: '1.0.0'
 config-version: 2
 
+dbt-cloud:
+  project-id: 70506183155272
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 

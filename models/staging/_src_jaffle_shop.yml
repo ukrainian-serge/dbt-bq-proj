@@ -2,8 +2,8 @@ version: 2
 
 sources:
   - name: jaffle_shop
-    database: "{{ env_var('GCP_PROJECT_ID') }}"
-    schema: "{{ env_var('BQ_DATASET_RAW') }}"
+    database: "{{ env_var('DBT_GCP_PROJECT_ID') }}"
+    schema: "{{ env_var('DBT_BQ_DATASET_RAW') }}"
 
     tables:
       - name: customers
